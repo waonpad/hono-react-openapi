@@ -16,6 +16,20 @@ export const User = z.object({
   updatedAt: z.string(),
 });
 export const SignUpResponse = z.object({ user: User, token: z.string() });
+export const ValidationErrorResnponse = z.object({
+  error: z.object({
+    message: z.string(),
+    type: z.literal("VALIDATION_ERROR"),
+    status: z.literal(400),
+    issues: z.array(
+      z.object({
+        path: z.array(z.union([z.string(), z.number()])),
+        code: z.string(),
+        message: z.string(),
+      })
+    ),
+  }),
+});
 export const SignInRequest = z.object({
   email: z.string().email(),
   password: UserPassword.min(8).max(100),
@@ -53,6 +67,7 @@ export const schemas = {
   SignUpRequest,
   User,
   SignUpResponse,
+  ValidationErrorResnponse,
   SignInRequest,
   SignInResponse,
   UpdateUserRequest,
@@ -86,12 +101,15 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(400),
-            type: z.literal("bad_request"),
+        schema: z.union([
+          z.object({
+            error: z.object({
+              status: z.literal(400),
+              type: z.literal("BAD_REQUEST"),
+            }),
           }),
-        }),
+          ValidationErrorResnponse,
+        ]),
       },
       {
         status: 401,
@@ -99,7 +117,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(401),
-            type: z.literal("unauthorized"),
+            type: z.literal("UNAUTHORIZED"),
           }),
         }),
       },
@@ -109,7 +127,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(403),
-            type: z.literal("forbidden"),
+            type: z.literal("FORBIDDEN"),
           }),
         }),
       },
@@ -119,7 +137,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(404),
-            type: z.literal("not_found"),
+            type: z.literal("NOT_FOUND"),
           }),
         }),
       },
@@ -129,7 +147,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(500),
-            type: z.literal("server_error"),
+            type: z.literal("SERVER_ERROR"),
           }),
         }),
       },
@@ -158,12 +176,15 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(400),
-            type: z.literal("bad_request"),
+        schema: z.union([
+          z.object({
+            error: z.object({
+              status: z.literal(400),
+              type: z.literal("BAD_REQUEST"),
+            }),
           }),
-        }),
+          ValidationErrorResnponse,
+        ]),
       },
       {
         status: 401,
@@ -171,7 +192,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(401),
-            type: z.literal("unauthorized"),
+            type: z.literal("UNAUTHORIZED"),
           }),
         }),
       },
@@ -181,7 +202,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(403),
-            type: z.literal("forbidden"),
+            type: z.literal("FORBIDDEN"),
           }),
         }),
       },
@@ -191,7 +212,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(404),
-            type: z.literal("not_found"),
+            type: z.literal("NOT_FOUND"),
           }),
         }),
       },
@@ -201,7 +222,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(500),
-            type: z.literal("server_error"),
+            type: z.literal("SERVER_ERROR"),
           }),
         }),
       },
@@ -239,12 +260,15 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(400),
-            type: z.literal("bad_request"),
+        schema: z.union([
+          z.object({
+            error: z.object({
+              status: z.literal(400),
+              type: z.literal("BAD_REQUEST"),
+            }),
           }),
-        }),
+          ValidationErrorResnponse,
+        ]),
       },
       {
         status: 401,
@@ -252,7 +276,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(401),
-            type: z.literal("unauthorized"),
+            type: z.literal("UNAUTHORIZED"),
           }),
         }),
       },
@@ -262,7 +286,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(403),
-            type: z.literal("forbidden"),
+            type: z.literal("FORBIDDEN"),
           }),
         }),
       },
@@ -272,7 +296,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(404),
-            type: z.literal("not_found"),
+            type: z.literal("NOT_FOUND"),
           }),
         }),
       },
@@ -282,7 +306,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(500),
-            type: z.literal("server_error"),
+            type: z.literal("SERVER_ERROR"),
           }),
         }),
       },
@@ -313,12 +337,15 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(400),
-            type: z.literal("bad_request"),
+        schema: z.union([
+          z.object({
+            error: z.object({
+              status: z.literal(400),
+              type: z.literal("BAD_REQUEST"),
+            }),
           }),
-        }),
+          ValidationErrorResnponse,
+        ]),
       },
       {
         status: 401,
@@ -326,7 +353,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(401),
-            type: z.literal("unauthorized"),
+            type: z.literal("UNAUTHORIZED"),
           }),
         }),
       },
@@ -336,7 +363,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(403),
-            type: z.literal("forbidden"),
+            type: z.literal("FORBIDDEN"),
           }),
         }),
       },
@@ -346,7 +373,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(404),
-            type: z.literal("not_found"),
+            type: z.literal("NOT_FOUND"),
           }),
         }),
       },
@@ -356,7 +383,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(500),
-            type: z.literal("server_error"),
+            type: z.literal("SERVER_ERROR"),
           }),
         }),
       },
@@ -385,12 +412,15 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(400),
-            type: z.literal("bad_request"),
+        schema: z.union([
+          z.object({
+            error: z.object({
+              status: z.literal(400),
+              type: z.literal("BAD_REQUEST"),
+            }),
           }),
-        }),
+          ValidationErrorResnponse,
+        ]),
       },
       {
         status: 401,
@@ -398,7 +428,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(401),
-            type: z.literal("unauthorized"),
+            type: z.literal("UNAUTHORIZED"),
           }),
         }),
       },
@@ -408,7 +438,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(403),
-            type: z.literal("forbidden"),
+            type: z.literal("FORBIDDEN"),
           }),
         }),
       },
@@ -418,7 +448,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(404),
-            type: z.literal("not_found"),
+            type: z.literal("NOT_FOUND"),
           }),
         }),
       },
@@ -428,7 +458,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(500),
-            type: z.literal("server_error"),
+            type: z.literal("SERVER_ERROR"),
           }),
         }),
       },
@@ -457,12 +487,15 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(400),
-            type: z.literal("bad_request"),
+        schema: z.union([
+          z.object({
+            error: z.object({
+              status: z.literal(400),
+              type: z.literal("BAD_REQUEST"),
+            }),
           }),
-        }),
+          ValidationErrorResnponse,
+        ]),
       },
       {
         status: 401,
@@ -470,7 +503,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(401),
-            type: z.literal("unauthorized"),
+            type: z.literal("UNAUTHORIZED"),
           }),
         }),
       },
@@ -480,7 +513,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(403),
-            type: z.literal("forbidden"),
+            type: z.literal("FORBIDDEN"),
           }),
         }),
       },
@@ -490,7 +523,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(404),
-            type: z.literal("not_found"),
+            type: z.literal("NOT_FOUND"),
           }),
         }),
       },
@@ -500,7 +533,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(500),
-            type: z.literal("server_error"),
+            type: z.literal("SERVER_ERROR"),
           }),
         }),
       },
@@ -529,12 +562,15 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(400),
-            type: z.literal("bad_request"),
+        schema: z.union([
+          z.object({
+            error: z.object({
+              status: z.literal(400),
+              type: z.literal("BAD_REQUEST"),
+            }),
           }),
-        }),
+          ValidationErrorResnponse,
+        ]),
       },
       {
         status: 401,
@@ -542,7 +578,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(401),
-            type: z.literal("unauthorized"),
+            type: z.literal("UNAUTHORIZED"),
           }),
         }),
       },
@@ -552,7 +588,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(403),
-            type: z.literal("forbidden"),
+            type: z.literal("FORBIDDEN"),
           }),
         }),
       },
@@ -562,7 +598,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(404),
-            type: z.literal("not_found"),
+            type: z.literal("NOT_FOUND"),
           }),
         }),
       },
@@ -572,7 +608,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(500),
-            type: z.literal("server_error"),
+            type: z.literal("SERVER_ERROR"),
           }),
         }),
       },
@@ -601,12 +637,15 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(400),
-            type: z.literal("bad_request"),
+        schema: z.union([
+          z.object({
+            error: z.object({
+              status: z.literal(400),
+              type: z.literal("BAD_REQUEST"),
+            }),
           }),
-        }),
+          ValidationErrorResnponse,
+        ]),
       },
       {
         status: 401,
@@ -614,7 +653,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(401),
-            type: z.literal("unauthorized"),
+            type: z.literal("UNAUTHORIZED"),
           }),
         }),
       },
@@ -624,7 +663,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(403),
-            type: z.literal("forbidden"),
+            type: z.literal("FORBIDDEN"),
           }),
         }),
       },
@@ -634,7 +673,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(404),
-            type: z.literal("not_found"),
+            type: z.literal("NOT_FOUND"),
           }),
         }),
       },
@@ -644,7 +683,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(500),
-            type: z.literal("server_error"),
+            type: z.literal("SERVER_ERROR"),
           }),
         }),
       },
@@ -683,12 +722,15 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(400),
-            type: z.literal("bad_request"),
+        schema: z.union([
+          z.object({
+            error: z.object({
+              status: z.literal(400),
+              type: z.literal("BAD_REQUEST"),
+            }),
           }),
-        }),
+          ValidationErrorResnponse,
+        ]),
       },
       {
         status: 401,
@@ -696,7 +738,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(401),
-            type: z.literal("unauthorized"),
+            type: z.literal("UNAUTHORIZED"),
           }),
         }),
       },
@@ -706,7 +748,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(403),
-            type: z.literal("forbidden"),
+            type: z.literal("FORBIDDEN"),
           }),
         }),
       },
@@ -716,7 +758,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(404),
-            type: z.literal("not_found"),
+            type: z.literal("NOT_FOUND"),
           }),
         }),
       },
@@ -726,7 +768,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(500),
-            type: z.literal("server_error"),
+            type: z.literal("SERVER_ERROR"),
           }),
         }),
       },
@@ -757,12 +799,15 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(400),
-            type: z.literal("bad_request"),
+        schema: z.union([
+          z.object({
+            error: z.object({
+              status: z.literal(400),
+              type: z.literal("BAD_REQUEST"),
+            }),
           }),
-        }),
+          ValidationErrorResnponse,
+        ]),
       },
       {
         status: 401,
@@ -770,7 +815,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(401),
-            type: z.literal("unauthorized"),
+            type: z.literal("UNAUTHORIZED"),
           }),
         }),
       },
@@ -780,7 +825,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(403),
-            type: z.literal("forbidden"),
+            type: z.literal("FORBIDDEN"),
           }),
         }),
       },
@@ -790,7 +835,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(404),
-            type: z.literal("not_found"),
+            type: z.literal("NOT_FOUND"),
           }),
         }),
       },
@@ -800,7 +845,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(500),
-            type: z.literal("server_error"),
+            type: z.literal("SERVER_ERROR"),
           }),
         }),
       },
@@ -829,12 +874,15 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(400),
-            type: z.literal("bad_request"),
+        schema: z.union([
+          z.object({
+            error: z.object({
+              status: z.literal(400),
+              type: z.literal("BAD_REQUEST"),
+            }),
           }),
-        }),
+          ValidationErrorResnponse,
+        ]),
       },
       {
         status: 401,
@@ -842,7 +890,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(401),
-            type: z.literal("unauthorized"),
+            type: z.literal("UNAUTHORIZED"),
           }),
         }),
       },
@@ -852,7 +900,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(403),
-            type: z.literal("forbidden"),
+            type: z.literal("FORBIDDEN"),
           }),
         }),
       },
@@ -862,7 +910,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(404),
-            type: z.literal("not_found"),
+            type: z.literal("NOT_FOUND"),
           }),
         }),
       },
@@ -872,7 +920,7 @@ export const endpoints = {
         schema: z.object({
           error: z.object({
             status: z.literal(500),
-            type: z.literal("server_error"),
+            type: z.literal("SERVER_ERROR"),
           }),
         }),
       },

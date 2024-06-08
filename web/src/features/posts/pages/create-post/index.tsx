@@ -1,6 +1,6 @@
+import { z } from "@/lib/zod/i18n/ja";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { useCreatePostMutation } from "../../api/create-post";
 
 /**

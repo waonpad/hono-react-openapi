@@ -1,24 +1,28 @@
 {
   "name": "hono-react-openapi",
   "version": "0.0.0",
-  "devDependencies": {
-    "@commitlint/config-conventional": "^19.2.2",
-    "bun-types": "^1.1.12",
-    "husky": "^9.0.11",
-    "typescript": "^5.4.5"
-  },
   "private": true,
+  "type": "module",
   "scripts": {
-    "// 開発環境を立ち上げる": "",
+    "// 開発環境を立ち上げる": "cp -n は既にファイルがあればexit code 1を返すので、中断されないため ; で連結",
     "setup": "$npm_execpath run setup:api; $npm_execpath run setup:web",
-    "setup:api": "cd api && $npm_execpath install && cp wrangler.toml.example wrangler.toml",
-    "setup:web": "cd web && $npm_execpath install && cp .env.local.example .env.local",
+    "setup:api": "cd api && $npm_execpath install && cp -n wrangler.toml.example wrangler.toml",
+    "setup:web": "cd web && $npm_execpath install && cp -n .env.local.example .env.local",
     "// openapi.jsonを生成してzodスキーマを生成する": "",
     "oapi": "$npm_execpath run oapi:gen && $npm_execpath run oapi:push",
     "// openapi.jsonを生成する": "",
     "oapi:gen": "$npm_execpath run scripts/get-openapi-doc.ts",
     "// openapi.jsonを元にzodスキーマを生成する": "",
-    "oapi:push": "cd web && $npm_execpath run zgen"
+    "oapi:push": "cd web && $npm_execpath run zgen",
+    "fmt": "biome format --write .",
+    "lnt": "biome lint --write .",
+    "che": "biome check --write ."
   },
-  "type": "module"
+  "devDependencies": {
+    "@biomejs/biome": "^1.8.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "bun-types": "^1.1.12",
+    "husky": "^9.0.11",
+    "typescript": "^5.4.5"
+  }
 }

@@ -1,4 +1,5 @@
 import { errorResponse } from "@/lib/errors";
+import { AppErrorStatusCode } from "@/lib/status-code";
 import type { Env } from "@/types/common";
 import type { Context, Next } from "hono";
 import { verify } from "hono/jwt";
@@ -34,11 +35,9 @@ export const setUser = () => async (c: Context<Env>, next: Next) => {
     return;
   } catch {
     // トークンが不正な場合はエラーレスポンスを返す
-    return errorResponse({
-      c,
+    return errorResponse(c, {
       message: "Invalid token",
-      status: 401,
-      type: "unauthorized",
+      status: AppErrorStatusCode.UNAUTHORIZED,
       severity: "warn",
       resourceType: "USER",
     });

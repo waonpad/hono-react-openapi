@@ -78,6 +78,72 @@
           "token"
         ]
       },
+      "ValidationErrorResnponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "VALIDATION_ERROR"
+                ]
+              },
+              "status": {
+                "type": "number",
+                "enum": [
+                  400
+                ]
+              },
+              "issues": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      }
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "message",
+              "type",
+              "status",
+              "issues"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
       "UserPassword": {
         "type": "string",
         "minLength": 8,
@@ -308,32 +374,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
+                  "anyOf": [
+                    {
                       "type": "object",
                       "properties": {
-                        "status": {
-                          "type": "number",
-                          "enum": [
-                            400
-                          ]
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "bad_request"
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "number",
+                              "enum": [
+                                400
+                              ]
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "BAD_REQUEST"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "type"
                           ]
                         }
                       },
                       "required": [
-                        "status",
-                        "type"
+                        "error"
                       ]
+                    },
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResnponse"
                     }
-                  },
-                  "required": [
-                    "error"
                   ]
                 }
               }
@@ -358,7 +431,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "unauthorized"
+                            "UNAUTHORIZED"
                           ]
                         }
                       },
@@ -394,7 +467,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "forbidden"
+                            "FORBIDDEN"
                           ]
                         }
                       },
@@ -430,7 +503,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "not_found"
+                            "NOT_FOUND"
                           ]
                         }
                       },
@@ -466,7 +539,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "server_error"
+                            "SERVER_ERROR"
                           ]
                         }
                       },
@@ -525,32 +598,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
+                  "anyOf": [
+                    {
                       "type": "object",
                       "properties": {
-                        "status": {
-                          "type": "number",
-                          "enum": [
-                            400
-                          ]
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "bad_request"
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "number",
+                              "enum": [
+                                400
+                              ]
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "BAD_REQUEST"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "type"
                           ]
                         }
                       },
                       "required": [
-                        "status",
-                        "type"
+                        "error"
                       ]
+                    },
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResnponse"
                     }
-                  },
-                  "required": [
-                    "error"
                   ]
                 }
               }
@@ -575,7 +655,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "unauthorized"
+                            "UNAUTHORIZED"
                           ]
                         }
                       },
@@ -611,7 +691,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "forbidden"
+                            "FORBIDDEN"
                           ]
                         }
                       },
@@ -647,7 +727,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "not_found"
+                            "NOT_FOUND"
                           ]
                         }
                       },
@@ -683,7 +763,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "server_error"
+                            "SERVER_ERROR"
                           ]
                         }
                       },
@@ -732,32 +812,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
+                  "anyOf": [
+                    {
                       "type": "object",
                       "properties": {
-                        "status": {
-                          "type": "number",
-                          "enum": [
-                            400
-                          ]
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "bad_request"
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "number",
+                              "enum": [
+                                400
+                              ]
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "BAD_REQUEST"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "type"
                           ]
                         }
                       },
                       "required": [
-                        "status",
-                        "type"
+                        "error"
                       ]
+                    },
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResnponse"
                     }
-                  },
-                  "required": [
-                    "error"
                   ]
                 }
               }
@@ -782,7 +869,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "unauthorized"
+                            "UNAUTHORIZED"
                           ]
                         }
                       },
@@ -818,7 +905,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "forbidden"
+                            "FORBIDDEN"
                           ]
                         }
                       },
@@ -854,7 +941,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "not_found"
+                            "NOT_FOUND"
                           ]
                         }
                       },
@@ -890,7 +977,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "server_error"
+                            "SERVER_ERROR"
                           ]
                         }
                       },
@@ -960,32 +1047,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
+                  "anyOf": [
+                    {
                       "type": "object",
                       "properties": {
-                        "status": {
-                          "type": "number",
-                          "enum": [
-                            400
-                          ]
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "bad_request"
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "number",
+                              "enum": [
+                                400
+                              ]
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "BAD_REQUEST"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "type"
                           ]
                         }
                       },
                       "required": [
-                        "status",
-                        "type"
+                        "error"
                       ]
+                    },
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResnponse"
                     }
-                  },
-                  "required": [
-                    "error"
                   ]
                 }
               }
@@ -1010,7 +1104,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "unauthorized"
+                            "UNAUTHORIZED"
                           ]
                         }
                       },
@@ -1046,7 +1140,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "forbidden"
+                            "FORBIDDEN"
                           ]
                         }
                       },
@@ -1082,7 +1176,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "not_found"
+                            "NOT_FOUND"
                           ]
                         }
                       },
@@ -1118,7 +1212,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "server_error"
+                            "SERVER_ERROR"
                           ]
                         }
                       },
@@ -1171,32 +1265,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
+                  "anyOf": [
+                    {
                       "type": "object",
                       "properties": {
-                        "status": {
-                          "type": "number",
-                          "enum": [
-                            400
-                          ]
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "bad_request"
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "number",
+                              "enum": [
+                                400
+                              ]
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "BAD_REQUEST"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "type"
                           ]
                         }
                       },
                       "required": [
-                        "status",
-                        "type"
+                        "error"
                       ]
+                    },
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResnponse"
                     }
-                  },
-                  "required": [
-                    "error"
                   ]
                 }
               }
@@ -1221,7 +1322,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "unauthorized"
+                            "UNAUTHORIZED"
                           ]
                         }
                       },
@@ -1257,7 +1358,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "forbidden"
+                            "FORBIDDEN"
                           ]
                         }
                       },
@@ -1293,7 +1394,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "not_found"
+                            "NOT_FOUND"
                           ]
                         }
                       },
@@ -1329,7 +1430,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "server_error"
+                            "SERVER_ERROR"
                           ]
                         }
                       },
@@ -1483,32 +1584,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
+                  "anyOf": [
+                    {
                       "type": "object",
                       "properties": {
-                        "status": {
-                          "type": "number",
-                          "enum": [
-                            400
-                          ]
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "bad_request"
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "number",
+                              "enum": [
+                                400
+                              ]
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "BAD_REQUEST"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "type"
                           ]
                         }
                       },
                       "required": [
-                        "status",
-                        "type"
+                        "error"
                       ]
+                    },
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResnponse"
                     }
-                  },
-                  "required": [
-                    "error"
                   ]
                 }
               }
@@ -1533,7 +1641,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "unauthorized"
+                            "UNAUTHORIZED"
                           ]
                         }
                       },
@@ -1569,7 +1677,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "forbidden"
+                            "FORBIDDEN"
                           ]
                         }
                       },
@@ -1605,7 +1713,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "not_found"
+                            "NOT_FOUND"
                           ]
                         }
                       },
@@ -1641,7 +1749,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "server_error"
+                            "SERVER_ERROR"
                           ]
                         }
                       },
@@ -1700,32 +1808,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
+                  "anyOf": [
+                    {
                       "type": "object",
                       "properties": {
-                        "status": {
-                          "type": "number",
-                          "enum": [
-                            400
-                          ]
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "bad_request"
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "number",
+                              "enum": [
+                                400
+                              ]
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "BAD_REQUEST"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "type"
                           ]
                         }
                       },
                       "required": [
-                        "status",
-                        "type"
+                        "error"
                       ]
+                    },
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResnponse"
                     }
-                  },
-                  "required": [
-                    "error"
                   ]
                 }
               }
@@ -1750,7 +1865,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "unauthorized"
+                            "UNAUTHORIZED"
                           ]
                         }
                       },
@@ -1786,7 +1901,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "forbidden"
+                            "FORBIDDEN"
                           ]
                         }
                       },
@@ -1822,7 +1937,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "not_found"
+                            "NOT_FOUND"
                           ]
                         }
                       },
@@ -1858,7 +1973,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "server_error"
+                            "SERVER_ERROR"
                           ]
                         }
                       },
@@ -1993,32 +2108,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
+                  "anyOf": [
+                    {
                       "type": "object",
                       "properties": {
-                        "status": {
-                          "type": "number",
-                          "enum": [
-                            400
-                          ]
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "bad_request"
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "number",
+                              "enum": [
+                                400
+                              ]
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "BAD_REQUEST"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "type"
                           ]
                         }
                       },
                       "required": [
-                        "status",
-                        "type"
+                        "error"
                       ]
+                    },
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResnponse"
                     }
-                  },
-                  "required": [
-                    "error"
                   ]
                 }
               }
@@ -2043,7 +2165,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "unauthorized"
+                            "UNAUTHORIZED"
                           ]
                         }
                       },
@@ -2079,7 +2201,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "forbidden"
+                            "FORBIDDEN"
                           ]
                         }
                       },
@@ -2115,7 +2237,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "not_found"
+                            "NOT_FOUND"
                           ]
                         }
                       },
@@ -2151,7 +2273,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "server_error"
+                            "SERVER_ERROR"
                           ]
                         }
                       },
@@ -2221,32 +2343,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
+                  "anyOf": [
+                    {
                       "type": "object",
                       "properties": {
-                        "status": {
-                          "type": "number",
-                          "enum": [
-                            400
-                          ]
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "bad_request"
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "number",
+                              "enum": [
+                                400
+                              ]
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "BAD_REQUEST"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "type"
                           ]
                         }
                       },
                       "required": [
-                        "status",
-                        "type"
+                        "error"
                       ]
+                    },
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResnponse"
                     }
-                  },
-                  "required": [
-                    "error"
                   ]
                 }
               }
@@ -2271,7 +2400,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "unauthorized"
+                            "UNAUTHORIZED"
                           ]
                         }
                       },
@@ -2307,7 +2436,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "forbidden"
+                            "FORBIDDEN"
                           ]
                         }
                       },
@@ -2343,7 +2472,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "not_found"
+                            "NOT_FOUND"
                           ]
                         }
                       },
@@ -2379,7 +2508,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "server_error"
+                            "SERVER_ERROR"
                           ]
                         }
                       },
@@ -2432,32 +2561,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
+                  "anyOf": [
+                    {
                       "type": "object",
                       "properties": {
-                        "status": {
-                          "type": "number",
-                          "enum": [
-                            400
-                          ]
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "bad_request"
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "number",
+                              "enum": [
+                                400
+                              ]
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "BAD_REQUEST"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "type"
                           ]
                         }
                       },
                       "required": [
-                        "status",
-                        "type"
+                        "error"
                       ]
+                    },
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResnponse"
                     }
-                  },
-                  "required": [
-                    "error"
                   ]
                 }
               }
@@ -2482,7 +2618,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "unauthorized"
+                            "UNAUTHORIZED"
                           ]
                         }
                       },
@@ -2518,7 +2654,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "forbidden"
+                            "FORBIDDEN"
                           ]
                         }
                       },
@@ -2554,7 +2690,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "not_found"
+                            "NOT_FOUND"
                           ]
                         }
                       },
@@ -2590,7 +2726,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "server_error"
+                            "SERVER_ERROR"
                           ]
                         }
                       },
@@ -2642,32 +2778,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
+                  "anyOf": [
+                    {
                       "type": "object",
                       "properties": {
-                        "status": {
-                          "type": "number",
-                          "enum": [
-                            400
-                          ]
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "bad_request"
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "number",
+                              "enum": [
+                                400
+                              ]
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "BAD_REQUEST"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "type"
                           ]
                         }
                       },
                       "required": [
-                        "status",
-                        "type"
+                        "error"
                       ]
+                    },
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResnponse"
                     }
-                  },
-                  "required": [
-                    "error"
                   ]
                 }
               }
@@ -2692,7 +2835,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "unauthorized"
+                            "UNAUTHORIZED"
                           ]
                         }
                       },
@@ -2728,7 +2871,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "forbidden"
+                            "FORBIDDEN"
                           ]
                         }
                       },
@@ -2764,7 +2907,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "not_found"
+                            "NOT_FOUND"
                           ]
                         }
                       },
@@ -2800,7 +2943,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "server_error"
+                            "SERVER_ERROR"
                           ]
                         }
                       },

@@ -2,6 +2,7 @@ import { defaultHook } from "@/lib/default-hook";
 import { errorResponse } from "@/lib/errors";
 import { z } from "@/lib/ja-zod";
 import { getOrderColumn } from "@/lib/order-column";
+import { AppErrorStatusCode } from "@/lib/status-code";
 import { postsTable } from "@/schemas/posts";
 import { CustomHono, type JwtPayload } from "@/types/common";
 import { and, count, eq, ilike, or, sql } from "drizzle-orm";
@@ -17,6 +18,8 @@ const postsRoutes = new CustomHono({ defaultHook })
    * 投稿の作成
    */
   .openapi(createPostConfig, async (c) => {
+    console.log("createPostConfig");
+
     const { sub } = c.get("jwtPayload") as JwtPayload;
 
     const db = drizzle(c.env.DB);
@@ -47,11 +50,9 @@ const postsRoutes = new CustomHono({ defaultHook })
     const targetPost = await db.select().from(postsTable).where(eq(postsTable.id, postId)).get();
 
     if (!targetPost) {
-      return errorResponse({
-        c,
+      return errorResponse(c, {
         message: "Post not found",
-        status: 404,
-        type: "not_found",
+        status: AppErrorStatusCode.NOT_FOUND,
         severity: "warn",
         resourceType: "POST",
         eventData: {
@@ -61,11 +62,9 @@ const postsRoutes = new CustomHono({ defaultHook })
     }
 
     if (targetPost.authorId !== sub) {
-      return errorResponse({
-        c,
+      return errorResponse(c, {
         message: "You can only update your own post",
-        status: 403,
-        type: "forbidden",
+        status: AppErrorStatusCode.FORBIDDEN,
         severity: "warn",
         resourceType: "POST",
         eventData: {
@@ -156,11 +155,9 @@ const postsRoutes = new CustomHono({ defaultHook })
       .get();
 
     if (!post) {
-      return errorResponse({
-        c,
+      return errorResponse(c, {
         message: "Post not found",
-        status: 404,
-        type: "not_found",
+        status: AppErrorStatusCode.NOT_FOUND,
         severity: "warn",
         resourceType: "POST",
         eventData: {
@@ -183,11 +180,9 @@ const postsRoutes = new CustomHono({ defaultHook })
     const targetPost = await db.select().from(postsTable).where(eq(postsTable.id, id)).get();
 
     if (!targetPost) {
-      return errorResponse({
-        c,
+      return errorResponse(c, {
         message: "Post not found",
-        status: 404,
-        type: "not_found",
+        status: AppErrorStatusCode.NOT_FOUND,
         severity: "warn",
         resourceType: "POST",
         eventData: {
@@ -197,11 +192,9 @@ const postsRoutes = new CustomHono({ defaultHook })
     }
 
     if (targetPost.authorId !== sub) {
-      return errorResponse({
-        c,
+      return errorResponse(c, {
         message: "You can only delete your own post",
-        status: 403,
-        type: "forbidden",
+        status: AppErrorStatusCode.FORBIDDEN,
         severity: "warn",
         resourceType: "POST",
         eventData: {

@@ -19,9 +19,6 @@
     "db:drop": "drizzle-kit drop",
     "// ローカルDBにシードデータを投入する": "",
     "db:seed:dev": "$npm_execpath run db:push:dev && $npm_execpath run ./db/seed.ts",
-    "fmt": "biome format --write .",
-    "lnt": "biome lint --apply .",
-    "che": "biome check --apply .",
     "type": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
@@ -35,15 +32,12 @@
     "zod-i18n-map": "^2.27.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.7.3",
     "@cloudflare/workers-types": "^4.20240403.0",
     "@commitlint/config-conventional": "^19.2.2",
     "@faker-js/faker": "^8.4.1",
-    "better-sqlite3": "^10.0.0",
     "bun-types": "^1.1.12",
     "drizzle-kit": "^0.21.2",
     "fishery": "^2.2.2",
-    "husky": "^9.0.11",
     "typescript": "^5.4.5",
     "wrangler": "^3.47.0"
   }

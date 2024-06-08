@@ -2,6 +2,7 @@ import { HTTPException } from "hono/http-exception";
 import { defaultHook } from "./lib/default-hook";
 import { docs } from "./lib/docs";
 import { errorResponse } from "./lib/errors";
+import { AppErrorStatusCode, type HttpErrorStatusCode } from "./lib/status-code";
 import { middlewares } from "./middlewares";
 import authRoutes from "./modules/auth";
 import { jsxRoutes } from "./modules/jsx";
@@ -28,13 +29,9 @@ docs(app);
  * 404エラー時の共通処理
  */
 app.notFound((c) => {
-  // これは今は関係ない
-  // t('common:error.route_not_found.text')
-  return errorResponse({
-    c,
+  return errorResponse(c, {
     message: "Route not found",
-    status: 404,
-    type: "not_found",
+    status: AppErrorStatusCode.NOT_FOUND,
     severity: "warn",
     eventData: {
       path: c.req.path,
@@ -47,28 +44,19 @@ app.notFound((c) => {
  * サーバーエラー時の共通処理
  */
 app.onError((err, c) => {
-  // これは今は関係ない
-  // t('common:error.server_error.text')
-
   // jwtミドルウェアでauthorizationヘッダーがなかったときなど、honoが例外を投げるのでここに入ってくる
   if (err instanceof HTTPException) {
-    // return errorResponse(c, err.status, "", "error", undefined, {}, err);
-
-    return errorResponse({
-      c,
+    return errorResponse(c, {
       message: err.message,
-      status: 500,
-      type: "server_error",
+      status: err.status as HttpErrorStatusCode,
       severity: "error",
       err,
     });
   }
 
-  return errorResponse({
-    c,
-    message: "Server Error",
-    status: 500,
-    type: "server_error",
+  return errorResponse(c, {
+    message: "Unexpected error",
+    status: AppErrorStatusCode.SERVER_ERROR,
     severity: "error",
     err,
   });

@@ -1,5 +1,5 @@
+import type { z } from "@/lib/zod/i18n/ja";
 import { endpoints } from "@/schemas/generated";
-import type { z } from "zod";
 import type { createContract } from "..";
 
 /**

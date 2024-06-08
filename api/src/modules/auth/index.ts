@@ -1,6 +1,7 @@
 import { hashPassword, verifyPassword } from "@/lib/crypto";
 import { defaultHook } from "@/lib/default-hook";
 import { errorResponse } from "@/lib/errors";
+import { AppErrorStatusCode } from "@/lib/status-code";
 import { usersTable } from "@/schemas/users";
 import { CustomHono } from "@/types/common";
 import { eq } from "drizzle-orm";
@@ -27,11 +28,9 @@ const authRoutes = new CustomHono({ defaultHook })
     const isExistsSameEmail = (await db.select().from(usersTable).where(eq(usersTable.email, email))).length > 0;
 
     if (isExistsSameEmail) {
-      return errorResponse({
-        c,
+      return errorResponse(c, {
         message: "User already exists",
-        status: 400,
-        type: "bad_request",
+        status: AppErrorStatusCode.BAD_REQUEST,
         severity: "warn",
       });
     }
@@ -65,21 +64,17 @@ const authRoutes = new CustomHono({ defaultHook })
     const user = await db.select().from(usersTable).where(eq(usersTable.email, email)).get();
 
     if (!user) {
-      return errorResponse({
-        c,
+      return errorResponse(c, {
         message: "Invalid email or password",
-        status: 401,
-        type: "unauthorized",
+        status: AppErrorStatusCode.BAD_REQUEST,
         severity: "warn",
       });
     }
 
-    if (!verifyPassword(user.hashedPassword, password)) {
-      return errorResponse({
-        c,
+    if (!(await verifyPassword(user.hashedPassword, password))) {
+      return errorResponse(c, {
         message: "Invalid email or password",
-        status: 401,
-        type: "unauthorized",
+        status: AppErrorStatusCode.BAD_REQUEST,
         severity: "warn",
       });
     }

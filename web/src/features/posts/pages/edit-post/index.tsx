@@ -1,7 +1,7 @@
+import { z } from "@/lib/zod/i18n/ja";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { z } from "zod";
 import { usePostQuery } from "../../api/get-post";
 import { useUpdatePostMutation } from "../../api/update-post";
 

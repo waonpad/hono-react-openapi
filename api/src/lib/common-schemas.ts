@@ -1,19 +1,13 @@
 import type { StatusCode } from "hono/utils/http-status";
-import { z } from "../lib/ja-zod";
+import { constructZodLiteralUnionType, z } from "../lib/ja-zod";
+import { AppErrorStatusCode, ErrorType, formatToHttpStatusCode } from "./status-code";
 
 /**
  * クライアントが何を原因にエラーが発生したかを確認するための、リソースの種類
  */
 export const resourceTypeSchema = z.enum(["USER", "POST"]);
 
-export const errorTypeSchema = z.enum([
-  "bad_request",
-  "validation_error",
-  "unauthorized",
-  "forbidden",
-  "not_found",
-  "server_error",
-]);
+export const errorTypeSchema = z.enum(ErrorType);
 
 /**
  * バリデーションエラーのレスポンスのスキーマ
@@ -22,8 +16,8 @@ export const validationErrorResnponseSchema = z
   .object({
     error: z.object({
       message: z.string(),
-      type: z.literal("validation_error"),
-      status: z.literal(400),
+      type: z.literal("VALIDATION_ERROR" satisfies ErrorType),
+      status: z.literal(400 satisfies StatusCode),
       issues: z.array(
         z.object({
           path: z.array(z.union([z.string(), z.number()])),
@@ -41,7 +35,10 @@ export const validationErrorResnponseSchema = z
 export const errorSchema = z.object({
   message: z.string(),
   type: errorTypeSchema,
-  status: z.number(),
+  /**
+   * アプリ内で明示的に使用しているHttpエラーのステータスコードだけを許容する
+   */
+  status: constructZodLiteralUnionType(Object.values(AppErrorStatusCode).map((v) => formatToHttpStatusCode(v))),
   severity: z.string(),
   resourceType: resourceTypeSchema.optional(),
   logId: z.string().optional(),
@@ -62,7 +59,6 @@ export const errorResponseSchema = z
   .openapi("ErrorResponse");
 
 export const createTypedErrorResponseSchema = (
-  status: StatusCode,
   type: typeof errorResponseSchema.shape.error._type.type,
   schemaName: string,
 ) => {
@@ -70,7 +66,7 @@ export const createTypedErrorResponseSchema = (
     z
       .object({
         error: z.object({
-          status: z.literal(status),
+          status: z.literal(formatToHttpStatusCode(AppErrorStatusCode[type])),
           type: z.literal(type),
         }),
       })

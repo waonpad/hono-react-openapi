@@ -13,7 +13,7 @@ export const defaultHook: Hook<unknown, Env, "", unknown> = (result, c) => {
         error: {
           status: 400,
           message: "バリデーションエラーが発生しました",
-          type: "validation_error",
+          type: "VALIDATION_ERROR",
           issues: result.error.issues,
         },
       } satisfies typeof validationErrorResnponseSchema._type,

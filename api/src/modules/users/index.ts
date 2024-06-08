@@ -2,6 +2,7 @@ import { defaultHook } from "@/lib/default-hook";
 import { errorResponse } from "@/lib/errors";
 import { z } from "@/lib/ja-zod";
 import { getOrderColumn } from "@/lib/order-column";
+import { AppErrorStatusCode } from "@/lib/status-code";
 import { usersTable } from "@/schemas/users";
 import { CustomHono, type JwtPayload } from "@/types/common";
 import { and, count, eq, ilike, or, sql } from "drizzle-orm";
@@ -24,11 +25,9 @@ const usersRoutes = new CustomHono({ defaultHook })
     const user = await db.select().from(usersTable).where(eq(usersTable.id, sub)).get();
 
     if (!user) {
-      return errorResponse({
-        c,
+      return errorResponse(c, {
         message: "User not found",
-        status: 404,
-        type: "not_found",
+        status: AppErrorStatusCode.NOT_FOUND,
         severity: "warn",
         resourceType: "USER",
         eventData: {
@@ -47,11 +46,9 @@ const usersRoutes = new CustomHono({ defaultHook })
     const { sub } = c.get("jwtPayload") as JwtPayload;
 
     if (sub !== userId) {
-      return errorResponse({
-        c,
+      return errorResponse(c, {
         message: "You can only update your own information",
-        status: 403,
-        type: "forbidden",
+        status: AppErrorStatusCode.FORBIDDEN,
         severity: "warn",
         resourceType: "USER",
         eventData: {
@@ -140,11 +137,9 @@ const usersRoutes = new CustomHono({ defaultHook })
     const user = await db.select().from(usersTable).where(eq(usersTable.id, id)).get();
 
     if (!user) {
-      return errorResponse({
-        c,
+      return errorResponse(c, {
         message: "User not found",
-        status: 404,
-        type: "not_found",
+        status: AppErrorStatusCode.NOT_FOUND,
         severity: "warn",
         resourceType: "USER",
         eventData: {

@@ -23,6 +23,13 @@
     }
   },
   "files": {
-    "ignore": ["**/*.json"]
+    "ignore": [
+      "**/node_modules/**",
+      "**/.wrangler/**",
+      "**/src/**/*.module.css.d.ts",
+      "**/src/**/*.module.scss.d.ts",
+      "**/*.json",
+      "web/src/schemas/generated.ts"
+    ]
   }
 }

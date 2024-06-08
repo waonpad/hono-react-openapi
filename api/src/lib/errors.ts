@@ -1,8 +1,8 @@
 import type { PageResourceType } from "@/types/common";
 import type { Context } from "hono";
-import type { StatusCode } from "hono/utils/http-status";
 import { z } from "../lib/ja-zod";
 import type { errorSchema, errorTypeSchema } from "./common-schemas";
+import { AppErrorStatusCode, ErrorTypeMap, type HttpErrorStatusCode, formatToHttpStatusCode } from "./status-code";
 
 /**
  * ログレベルを定義
@@ -27,35 +27,61 @@ export type EventData = {
 /**
  * エラーレスポンスをjson形式に詰め替えて返す関数
  */
-export const errorResponse = ({
-  c,
-  message,
-  status,
-  type,
-  severity,
-  resourceType,
-  eventData,
-  err,
-}: {
-  c: Context;
-  message: string;
-  status: StatusCode;
-  type: z.infer<typeof errorTypeSchema>;
-  severity: z.infer<typeof severitySchema>;
-  resourceType?: PageResourceType;
-  eventData?: EventData;
-  err?: Error;
-}): ReturnType<Context["json"]> => {
+export const errorResponse = (
+  c: Context,
+  {
+    message,
+    type,
+    status,
+    severity,
+    resourceType,
+    eventData,
+    err,
+  }: {
+    message: string;
+    severity: z.infer<typeof severitySchema>;
+    resourceType?: PageResourceType;
+    eventData?: EventData;
+    err?: Error;
+  } & (
+    | {
+        type: z.infer<typeof errorTypeSchema>;
+        status?: never;
+      }
+    | {
+        type?: never;
+        status: AppErrorStatusCode | HttpErrorStatusCode;
+      }
+  ),
+): ReturnType<Context["json"]> => {
+  const { isAppErroCode, status: typedStatusCode } = status
+    ? Object.values(AppErrorStatusCode).some((v) => v === status)
+      ? ({
+          isAppErroCode: true,
+          status: status as AppErrorStatusCode,
+        } as const)
+      : ({
+          isAppErroCode: false,
+          status: status as HttpErrorStatusCode,
+        } as const)
+    : ({
+        isAppErroCode: true,
+        status: AppErrorStatusCode[type],
+      } as const);
+
   const error: ErrorType = {
     message,
-    type: type || "server_error",
-    status,
+    // biome-ignore lint/style/noNonNullAssertion: <explanation>
+    type: type || ErrorTypeMap.get(isAppErroCode ? typedStatusCode : 500)!,
+    status: status
+      ? formatToHttpStatusCode(isAppErroCode ? typedStatusCode : 500)
+      : formatToHttpStatusCode(AppErrorStatusCode[type]),
     severity: severity || "info",
     logId: c.get("logId"),
     path: c.req.path,
     method: c.req.method,
     resourceType,
-    // usr: jwtPayloadからidを取りたいが、try-catchでもエラーになってしまうので一旦コメントアウト
+    // usr: jwtPayloadからidを取りたい
   };
 
   if (err || ["warn", "error"].includes(severity)) {
@@ -64,5 +90,10 @@ export const errorResponse = ({
     console.error(err, data);
   }
 
-  return c.json({ error }, status);
+  return c.json(
+    { error },
+    status
+      ? formatToHttpStatusCode(isAppErroCode ? typedStatusCode : 500)
+      : formatToHttpStatusCode(AppErrorStatusCode[type]),
+  );
 };

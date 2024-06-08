@@ -1,6 +1,7 @@
 import type { createRoute } from "@hono/zod-openapi";
 import { z } from "../lib/ja-zod";
-import { createTypedErrorResponseSchema } from "./common-schemas";
+import { createTypedErrorResponseSchema, validationErrorResnponseSchema } from "./common-schemas";
+import { AppErrorStatusCode } from "./status-code";
 
 type Responses = Parameters<typeof createRoute>[0]["responses"];
 
@@ -25,43 +26,46 @@ export const responseWithPaginationSchema = <T extends z.ZodTypeAny>(schema: T) 
  */
 export const errorResponses = {
   // 型の絞り込みをするため、typeをリテラルで指定している
-  400: {
+  [AppErrorStatusCode.BAD_REQUEST]: {
     description: "Bad request: problem processing request.",
     content: {
       "application/json": {
-        schema: createTypedErrorResponseSchema(400, "bad_request", "BadRequestErrorResponse"),
+        schema: z.union([
+          createTypedErrorResponseSchema("BAD_REQUEST", "BadRequestErrorResponse"),
+          validationErrorResnponseSchema,
+        ]),
       },
     },
   },
-  401: {
+  [AppErrorStatusCode.UNAUTHORIZED]: {
     description: "Unauthorized: authentication required.",
     content: {
       "application/json": {
-        schema: createTypedErrorResponseSchema(401, "unauthorized", "UnauthorizedErrorResponse"),
+        schema: createTypedErrorResponseSchema("UNAUTHORIZED", "UnauthorizedErrorResponse"),
       },
     },
   },
-  403: {
+  [AppErrorStatusCode.FORBIDDEN]: {
     description: "Forbidden: insufficient permissions.",
     content: {
       "application/json": {
-        schema: createTypedErrorResponseSchema(403, "forbidden", "ForbiddenErrorResponse"),
+        schema: createTypedErrorResponseSchema("FORBIDDEN", "ForbiddenErrorResponse"),
       },
     },
   },
-  404: {
+  [AppErrorStatusCode.NOT_FOUND]: {
     description: "Not found: resource does not exist.",
     content: {
       "application/json": {
-        schema: createTypedErrorResponseSchema(404, "not_found", "NotFoundErrorResponse"),
+        schema: createTypedErrorResponseSchema("NOT_FOUND", "NotFoundErrorResponse"),
       },
     },
   },
-  500: {
+  [AppErrorStatusCode.SERVER_ERROR]: {
     description: "Server error: something went wrong.",
     content: {
       "application/json": {
-        schema: createTypedErrorResponseSchema(500, "server_error", "ServerErrorResponse"),
+        schema: createTypedErrorResponseSchema("SERVER_ERROR", "ServerErrorResponse"),
       },
     },
   },
