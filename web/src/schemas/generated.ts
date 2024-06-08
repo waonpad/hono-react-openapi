@@ -16,6 +16,21 @@ export const User = z.object({
   updatedAt: z.string(),
 });
 export const SignUpResponse = z.object({ user: User, token: z.string() });
+export const BadRequestErrorResponse = z.object({
+  error: z.object({
+    message: z.string(),
+    type: z.literal("BAD_REQUEST"),
+    status: z.literal(400),
+    severity: z.string(),
+    resourceType: z.enum(["USER", "POST"]).optional(),
+    logId: z.string().optional(),
+    path: z.string().optional(),
+    method: z.string().optional(),
+    timestamp: z.string().optional(),
+    usr: z.string().optional(),
+    org: z.string().optional(),
+  }),
+});
 export const ValidationErrorResnponse = z.object({
   error: z.object({
     message: z.string(),
@@ -28,6 +43,66 @@ export const ValidationErrorResnponse = z.object({
         message: z.string(),
       })
     ),
+  }),
+});
+export const UnauthorizedErrorResponse = z.object({
+  error: z.object({
+    message: z.string(),
+    type: z.literal("UNAUTHORIZED"),
+    status: z.literal(401),
+    severity: z.string(),
+    resourceType: z.enum(["USER", "POST"]).optional(),
+    logId: z.string().optional(),
+    path: z.string().optional(),
+    method: z.string().optional(),
+    timestamp: z.string().optional(),
+    usr: z.string().optional(),
+    org: z.string().optional(),
+  }),
+});
+export const ForbiddenErrorResponse = z.object({
+  error: z.object({
+    message: z.string(),
+    type: z.literal("FORBIDDEN"),
+    status: z.literal(403),
+    severity: z.string(),
+    resourceType: z.enum(["USER", "POST"]).optional(),
+    logId: z.string().optional(),
+    path: z.string().optional(),
+    method: z.string().optional(),
+    timestamp: z.string().optional(),
+    usr: z.string().optional(),
+    org: z.string().optional(),
+  }),
+});
+export const NotFoundErrorResponse = z.object({
+  error: z.object({
+    message: z.string(),
+    type: z.literal("NOT_FOUND"),
+    status: z.literal(404),
+    severity: z.string(),
+    resourceType: z.enum(["USER", "POST"]).optional(),
+    logId: z.string().optional(),
+    path: z.string().optional(),
+    method: z.string().optional(),
+    timestamp: z.string().optional(),
+    usr: z.string().optional(),
+    org: z.string().optional(),
+  }),
+});
+export const ServerErrorResponse = z.object({
+  error: z.object({
+    message: z.string(),
+    type: z.literal("SERVER_ERROR"),
+    status: z.literal(500),
+    severity: z.string(),
+    resourceType: z.enum(["USER", "POST"]).optional(),
+    logId: z.string().optional(),
+    path: z.string().optional(),
+    method: z.string().optional(),
+    timestamp: z.string().optional(),
+    usr: z.string().optional(),
+    org: z.string().optional(),
   }),
 });
 export const SignInRequest = z.object({
@@ -67,7 +142,12 @@ export const schemas = {
   SignUpRequest,
   User,
   SignUpResponse,
+  BadRequestErrorResponse,
   ValidationErrorResnponse,
+  UnauthorizedErrorResponse,
+  ForbiddenErrorResponse,
+  NotFoundErrorResponse,
+  ServerErrorResponse,
   SignInRequest,
   SignInResponse,
   UpdateUserRequest,
@@ -101,55 +181,27 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([
-          z.object({
-            error: z.object({
-              status: z.literal(400),
-              type: z.literal("BAD_REQUEST"),
-            }),
-          }),
-          ValidationErrorResnponse,
-        ]),
+        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
       },
       {
         status: 401,
         description: `Unauthorized: authentication required.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(401),
-            type: z.literal("UNAUTHORIZED"),
-          }),
-        }),
+        schema: UnauthorizedErrorResponse,
       },
       {
         status: 403,
         description: `Forbidden: insufficient permissions.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(403),
-            type: z.literal("FORBIDDEN"),
-          }),
-        }),
+        schema: ForbiddenErrorResponse,
       },
       {
         status: 404,
         description: `Not found: resource does not exist.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(404),
-            type: z.literal("NOT_FOUND"),
-          }),
-        }),
+        schema: NotFoundErrorResponse,
       },
       {
         status: 500,
         description: `Server error: something went wrong.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(500),
-            type: z.literal("SERVER_ERROR"),
-          }),
-        }),
+        schema: ServerErrorResponse,
       },
     ],
   },
@@ -176,55 +228,27 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([
-          z.object({
-            error: z.object({
-              status: z.literal(400),
-              type: z.literal("BAD_REQUEST"),
-            }),
-          }),
-          ValidationErrorResnponse,
-        ]),
+        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
       },
       {
         status: 401,
         description: `Unauthorized: authentication required.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(401),
-            type: z.literal("UNAUTHORIZED"),
-          }),
-        }),
+        schema: UnauthorizedErrorResponse,
       },
       {
         status: 403,
         description: `Forbidden: insufficient permissions.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(403),
-            type: z.literal("FORBIDDEN"),
-          }),
-        }),
+        schema: ForbiddenErrorResponse,
       },
       {
         status: 404,
         description: `Not found: resource does not exist.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(404),
-            type: z.literal("NOT_FOUND"),
-          }),
-        }),
+        schema: NotFoundErrorResponse,
       },
       {
         status: 500,
         description: `Server error: something went wrong.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(500),
-            type: z.literal("SERVER_ERROR"),
-          }),
-        }),
+        schema: ServerErrorResponse,
       },
     ],
   },
@@ -260,55 +284,27 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([
-          z.object({
-            error: z.object({
-              status: z.literal(400),
-              type: z.literal("BAD_REQUEST"),
-            }),
-          }),
-          ValidationErrorResnponse,
-        ]),
+        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
       },
       {
         status: 401,
         description: `Unauthorized: authentication required.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(401),
-            type: z.literal("UNAUTHORIZED"),
-          }),
-        }),
+        schema: UnauthorizedErrorResponse,
       },
       {
         status: 403,
         description: `Forbidden: insufficient permissions.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(403),
-            type: z.literal("FORBIDDEN"),
-          }),
-        }),
+        schema: ForbiddenErrorResponse,
       },
       {
         status: 404,
         description: `Not found: resource does not exist.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(404),
-            type: z.literal("NOT_FOUND"),
-          }),
-        }),
+        schema: NotFoundErrorResponse,
       },
       {
         status: 500,
         description: `Server error: something went wrong.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(500),
-            type: z.literal("SERVER_ERROR"),
-          }),
-        }),
+        schema: ServerErrorResponse,
       },
     ],
   },
@@ -337,55 +333,27 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([
-          z.object({
-            error: z.object({
-              status: z.literal(400),
-              type: z.literal("BAD_REQUEST"),
-            }),
-          }),
-          ValidationErrorResnponse,
-        ]),
+        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
       },
       {
         status: 401,
         description: `Unauthorized: authentication required.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(401),
-            type: z.literal("UNAUTHORIZED"),
-          }),
-        }),
+        schema: UnauthorizedErrorResponse,
       },
       {
         status: 403,
         description: `Forbidden: insufficient permissions.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(403),
-            type: z.literal("FORBIDDEN"),
-          }),
-        }),
+        schema: ForbiddenErrorResponse,
       },
       {
         status: 404,
         description: `Not found: resource does not exist.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(404),
-            type: z.literal("NOT_FOUND"),
-          }),
-        }),
+        schema: NotFoundErrorResponse,
       },
       {
         status: 500,
         description: `Server error: something went wrong.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(500),
-            type: z.literal("SERVER_ERROR"),
-          }),
-        }),
+        schema: ServerErrorResponse,
       },
     ],
   },
@@ -412,55 +380,27 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([
-          z.object({
-            error: z.object({
-              status: z.literal(400),
-              type: z.literal("BAD_REQUEST"),
-            }),
-          }),
-          ValidationErrorResnponse,
-        ]),
+        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
       },
       {
         status: 401,
         description: `Unauthorized: authentication required.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(401),
-            type: z.literal("UNAUTHORIZED"),
-          }),
-        }),
+        schema: UnauthorizedErrorResponse,
       },
       {
         status: 403,
         description: `Forbidden: insufficient permissions.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(403),
-            type: z.literal("FORBIDDEN"),
-          }),
-        }),
+        schema: ForbiddenErrorResponse,
       },
       {
         status: 404,
         description: `Not found: resource does not exist.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(404),
-            type: z.literal("NOT_FOUND"),
-          }),
-        }),
+        schema: NotFoundErrorResponse,
       },
       {
         status: 500,
         description: `Server error: something went wrong.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(500),
-            type: z.literal("SERVER_ERROR"),
-          }),
-        }),
+        schema: ServerErrorResponse,
       },
     ],
   },
@@ -487,55 +427,27 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([
-          z.object({
-            error: z.object({
-              status: z.literal(400),
-              type: z.literal("BAD_REQUEST"),
-            }),
-          }),
-          ValidationErrorResnponse,
-        ]),
+        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
       },
       {
         status: 401,
         description: `Unauthorized: authentication required.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(401),
-            type: z.literal("UNAUTHORIZED"),
-          }),
-        }),
+        schema: UnauthorizedErrorResponse,
       },
       {
         status: 403,
         description: `Forbidden: insufficient permissions.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(403),
-            type: z.literal("FORBIDDEN"),
-          }),
-        }),
+        schema: ForbiddenErrorResponse,
       },
       {
         status: 404,
         description: `Not found: resource does not exist.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(404),
-            type: z.literal("NOT_FOUND"),
-          }),
-        }),
+        schema: NotFoundErrorResponse,
       },
       {
         status: 500,
         description: `Server error: something went wrong.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(500),
-            type: z.literal("SERVER_ERROR"),
-          }),
-        }),
+        schema: ServerErrorResponse,
       },
     ],
   },
@@ -562,55 +474,27 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([
-          z.object({
-            error: z.object({
-              status: z.literal(400),
-              type: z.literal("BAD_REQUEST"),
-            }),
-          }),
-          ValidationErrorResnponse,
-        ]),
+        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
       },
       {
         status: 401,
         description: `Unauthorized: authentication required.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(401),
-            type: z.literal("UNAUTHORIZED"),
-          }),
-        }),
+        schema: UnauthorizedErrorResponse,
       },
       {
         status: 403,
         description: `Forbidden: insufficient permissions.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(403),
-            type: z.literal("FORBIDDEN"),
-          }),
-        }),
+        schema: ForbiddenErrorResponse,
       },
       {
         status: 404,
         description: `Not found: resource does not exist.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(404),
-            type: z.literal("NOT_FOUND"),
-          }),
-        }),
+        schema: NotFoundErrorResponse,
       },
       {
         status: 500,
         description: `Server error: something went wrong.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(500),
-            type: z.literal("SERVER_ERROR"),
-          }),
-        }),
+        schema: ServerErrorResponse,
       },
     ],
   },
@@ -637,55 +521,27 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([
-          z.object({
-            error: z.object({
-              status: z.literal(400),
-              type: z.literal("BAD_REQUEST"),
-            }),
-          }),
-          ValidationErrorResnponse,
-        ]),
+        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
       },
       {
         status: 401,
         description: `Unauthorized: authentication required.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(401),
-            type: z.literal("UNAUTHORIZED"),
-          }),
-        }),
+        schema: UnauthorizedErrorResponse,
       },
       {
         status: 403,
         description: `Forbidden: insufficient permissions.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(403),
-            type: z.literal("FORBIDDEN"),
-          }),
-        }),
+        schema: ForbiddenErrorResponse,
       },
       {
         status: 404,
         description: `Not found: resource does not exist.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(404),
-            type: z.literal("NOT_FOUND"),
-          }),
-        }),
+        schema: NotFoundErrorResponse,
       },
       {
         status: 500,
         description: `Server error: something went wrong.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(500),
-            type: z.literal("SERVER_ERROR"),
-          }),
-        }),
+        schema: ServerErrorResponse,
       },
     ],
   },
@@ -722,55 +578,27 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([
-          z.object({
-            error: z.object({
-              status: z.literal(400),
-              type: z.literal("BAD_REQUEST"),
-            }),
-          }),
-          ValidationErrorResnponse,
-        ]),
+        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
       },
       {
         status: 401,
         description: `Unauthorized: authentication required.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(401),
-            type: z.literal("UNAUTHORIZED"),
-          }),
-        }),
+        schema: UnauthorizedErrorResponse,
       },
       {
         status: 403,
         description: `Forbidden: insufficient permissions.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(403),
-            type: z.literal("FORBIDDEN"),
-          }),
-        }),
+        schema: ForbiddenErrorResponse,
       },
       {
         status: 404,
         description: `Not found: resource does not exist.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(404),
-            type: z.literal("NOT_FOUND"),
-          }),
-        }),
+        schema: NotFoundErrorResponse,
       },
       {
         status: 500,
         description: `Server error: something went wrong.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(500),
-            type: z.literal("SERVER_ERROR"),
-          }),
-        }),
+        schema: ServerErrorResponse,
       },
     ],
   },
@@ -799,55 +627,27 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([
-          z.object({
-            error: z.object({
-              status: z.literal(400),
-              type: z.literal("BAD_REQUEST"),
-            }),
-          }),
-          ValidationErrorResnponse,
-        ]),
+        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
       },
       {
         status: 401,
         description: `Unauthorized: authentication required.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(401),
-            type: z.literal("UNAUTHORIZED"),
-          }),
-        }),
+        schema: UnauthorizedErrorResponse,
       },
       {
         status: 403,
         description: `Forbidden: insufficient permissions.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(403),
-            type: z.literal("FORBIDDEN"),
-          }),
-        }),
+        schema: ForbiddenErrorResponse,
       },
       {
         status: 404,
         description: `Not found: resource does not exist.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(404),
-            type: z.literal("NOT_FOUND"),
-          }),
-        }),
+        schema: NotFoundErrorResponse,
       },
       {
         status: 500,
         description: `Server error: something went wrong.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(500),
-            type: z.literal("SERVER_ERROR"),
-          }),
-        }),
+        schema: ServerErrorResponse,
       },
     ],
   },
@@ -874,55 +674,27 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([
-          z.object({
-            error: z.object({
-              status: z.literal(400),
-              type: z.literal("BAD_REQUEST"),
-            }),
-          }),
-          ValidationErrorResnponse,
-        ]),
+        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
       },
       {
         status: 401,
         description: `Unauthorized: authentication required.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(401),
-            type: z.literal("UNAUTHORIZED"),
-          }),
-        }),
+        schema: UnauthorizedErrorResponse,
       },
       {
         status: 403,
         description: `Forbidden: insufficient permissions.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(403),
-            type: z.literal("FORBIDDEN"),
-          }),
-        }),
+        schema: ForbiddenErrorResponse,
       },
       {
         status: 404,
         description: `Not found: resource does not exist.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(404),
-            type: z.literal("NOT_FOUND"),
-          }),
-        }),
+        schema: NotFoundErrorResponse,
       },
       {
         status: 500,
         description: `Server error: something went wrong.`,
-        schema: z.object({
-          error: z.object({
-            status: z.literal(500),
-            type: z.literal("SERVER_ERROR"),
-          }),
-        }),
+        schema: ServerErrorResponse,
       },
     ],
   },

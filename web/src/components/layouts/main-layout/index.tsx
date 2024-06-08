@@ -3,7 +3,11 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
 export const MainLayout = ({ children }: { children: ReactNode }) => {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
+
+  const handleSignOutButtonClick = () => {
+    signOut();
+  };
 
   return (
     <>
@@ -14,6 +18,11 @@ export const MainLayout = ({ children }: { children: ReactNode }) => {
         <Link to="/posts/create">Create Post</Link>
         <Link to="/users">Users</Link>
         {user ? <Link to={`/users/${user.id}`}>Profile</Link> : <Link to="/auth/sign-in">Sign In</Link>}
+        {user && (
+          <button type="button" onClick={handleSignOutButtonClick}>
+            Sign Out
+          </button>
+        )}
       </div>
       <main
         style={{

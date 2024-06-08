@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prepare": "husky",
     "// 開発環境を立ち上げる": "cp -n は既にファイルがあればexit code 1を返すので、中断されないため ; で連結",
-    "setup": "$npm_execpath run setup:api; $npm_execpath run setup:web",
+    "setup": "$npm_execpath install && $npm_execpath run setup:api; $npm_execpath run setup:web",
     "setup:api": "cd api && $npm_execpath install && cp -n wrangler.toml.example wrangler.toml",
     "setup:web": "cd web && $npm_execpath install && cp -n .env.local.example .env.local",
     "// openapi.jsonを生成してzodスキーマを生成する": "",

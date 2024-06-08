@@ -31,7 +31,7 @@ export const errorResponses = {
     content: {
       "application/json": {
         schema: z.union([
-          createTypedErrorResponseSchema("BAD_REQUEST", "BadRequestErrorResponse"),
+          createTypedErrorResponseSchema("BAD_REQUEST").openapi("BadRequestErrorResponse"),
           validationErrorResnponseSchema,
         ]),
       },
@@ -41,7 +41,7 @@ export const errorResponses = {
     description: "Unauthorized: authentication required.",
     content: {
       "application/json": {
-        schema: createTypedErrorResponseSchema("UNAUTHORIZED", "UnauthorizedErrorResponse"),
+        schema: createTypedErrorResponseSchema("UNAUTHORIZED").openapi("UnauthorizedErrorResponse"),
       },
     },
   },
@@ -49,7 +49,7 @@ export const errorResponses = {
     description: "Forbidden: insufficient permissions.",
     content: {
       "application/json": {
-        schema: createTypedErrorResponseSchema("FORBIDDEN", "ForbiddenErrorResponse"),
+        schema: createTypedErrorResponseSchema("FORBIDDEN").openapi("ForbiddenErrorResponse"),
       },
     },
   },
@@ -57,7 +57,7 @@ export const errorResponses = {
     description: "Not found: resource does not exist.",
     content: {
       "application/json": {
-        schema: createTypedErrorResponseSchema("NOT_FOUND", "NotFoundErrorResponse"),
+        schema: createTypedErrorResponseSchema("NOT_FOUND").openapi("NotFoundErrorResponse"),
       },
     },
   },
@@ -65,7 +65,7 @@ export const errorResponses = {
     description: "Server error: something went wrong.",
     content: {
       "application/json": {
-        schema: createTypedErrorResponseSchema("SERVER_ERROR", "ServerErrorResponse"),
+        schema: createTypedErrorResponseSchema("SERVER_ERROR").openapi("ServerErrorResponse"),
       },
     },
   },

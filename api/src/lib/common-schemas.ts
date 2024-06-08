@@ -58,19 +58,16 @@ export const errorResponseSchema = z
   })
   .openapi("ErrorResponse");
 
-export const createTypedErrorResponseSchema = (
-  type: typeof errorResponseSchema.shape.error._type.type,
-  schemaName: string,
-) => {
+export const createTypedErrorResponseSchema = (type: typeof errorResponseSchema.shape.error._type.type) => {
   return errorResponseSchema.merge(
-    z
-      .object({
-        error: z.object({
+    z.object({
+      error: errorResponseSchema.shape.error.merge(
+        z.object({
           status: z.literal(formatToHttpStatusCode(AppErrorStatusCode[type])),
           type: z.literal(type),
         }),
-      })
-      .openapi(schemaName),
+      ),
+    }),
   );
 };
 
