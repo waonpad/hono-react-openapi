@@ -1,0 +1,24 @@
+name = "hono-api"
+compatibility_date = "2024-04-03"
+
+# [vars]
+# MY_VAR = "my-variable"
+# JWT_SECRET = "ここにアクセスして取得 -> https://generate-secret.vercel.app/32"
+
+# [[kv_namespaces]]
+# binding = "MY_KV_NAMESPACE"
+# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+# [[r2_buckets]]
+# binding = "MY_BUCKET"
+# bucket_name = "my-bucket"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "D1のデータベース名"
+database_id = "D1のデータベースID"
+preview_database_id = "DB"
+migrations_dir = "./db/migrations"
+
+# [ai]
+# binding = "AI"

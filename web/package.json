@@ -1,0 +1,51 @@
+{
+  "name": "web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --project tsconfig.build.json && vite build",
+    "preview": "vite preview",
+    "fmt": "biome format --write .",
+    "lnt": "biome lint --apply .",
+    "che": "biome check --apply .",
+    "test": "vitest run --silent",
+    "test:watch": "vitest watch --silent",
+    "test:ci": "vitest run --silent",
+    "zgen": "openapi-zod-client ../openapi.json -a -o src/schemas/generated.ts -t templates/openapi-zod-client/custom.hbs --additional-props-default-value=false"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
+    "@t3-oss/env-core": "^0.10.1",
+    "@tanstack/react-query": "^5.36.0",
+    "@tanstack/react-query-devtools": "^5.36.1",
+    "i18next": "^23.11.5",
+    "qs": "^6.12.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.13",
+    "react-hook-form": "^7.51.4",
+    "react-router-dom": "^6.23.1",
+    "zod": "^3.23.8",
+    "zod-i18n-map": "^2.27.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.7.3",
+    "@testing-library/jest-dom": "^6.4.5",
+    "@testing-library/react": "^15.0.7",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/node": "^20.12.11",
+    "@types/qs": "^6.9.15",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@types/react-test-renderer": "^18.3.0",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "happy-dom": "^14.10.1",
+    "openapi-zod-client": "^1.18.1",
+    "react-test-renderer": "^18.3.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0",
+    "vitest": "^1.6.0"
+  }
+}

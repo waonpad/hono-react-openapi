@@ -1,0 +1,50 @@
+{
+  "name": "api",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev src/index.ts",
+    "deploy": "wrangler deploy --minify src/index.ts",
+    "deploy:secret": "wrangler secret put JWT_SECRET",
+    "// スキーマをもとにマイグレーションファイルを作る": "",
+    "db:gen": "drizzle-kit generate",
+    "// ローカルDBにマイグレーションを適用する": "",
+    "db:push:dev": "drizzle-kit push",
+    "// マイグレーションファイルをリモート開発環境のd1プロジェクトに適用する": "TOOD: my-databaseを環境変数から読めるようにする",
+    "db:push:prod": "wrangler d1 migrations apply my-database --remote",
+    "// ローカルDBをGUIで確認する": "",
+    "db:studio": "drizzle-kit studio",
+    "// マイグレーションファイルを削除する": "",
+    "db:drop": "drizzle-kit drop",
+    "// ローカルDBにシードデータを投入する": "",
+    "db:seed:dev": "$npm_execpath run db:push:dev && $npm_execpath run ./db/seed.ts",
+    "fmt": "biome format --write .",
+    "lnt": "biome lint --apply .",
+    "che": "biome check --apply .",
+    "type": "tsc -p ./tsconfig.json"
+  },
+  "dependencies": {
+    "@hono/swagger-ui": "^0.2.2",
+    "@hono/zod-openapi": "^0.12.2",
+    "drizzle-orm": "^0.30.10",
+    "hono": "^4.3.7",
+    "i18next": "^23.11.5",
+    "nanoid": "^5.0.7",
+    "zod": "^3.23.8",
+    "zod-i18n-map": "^2.27.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.7.3",
+    "@cloudflare/workers-types": "^4.20240403.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@faker-js/faker": "^8.4.1",
+    "better-sqlite3": "^10.0.0",
+    "bun-types": "^1.1.12",
+    "drizzle-kit": "^0.21.2",
+    "fishery": "^2.2.2",
+    "husky": "^9.0.11",
+    "typescript": "^5.4.5",
+    "wrangler": "^3.47.0"
+  }
+}

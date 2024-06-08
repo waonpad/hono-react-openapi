@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "biomejs.biome",
+    "fabiospampinato.vscode-terminals"
+    // "stylelint.vscode-stylelint"
+  ]
+}

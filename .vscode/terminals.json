@@ -1,0 +1,18 @@
+{
+  "autorun": false,
+  "terminals": [
+    {
+      "name": "root",
+      "commands": [],
+      "focus": true
+    },
+    {
+      "name": "api",
+      "commands": ["cd api"]
+    },
+    {
+      "name": "web",
+      "commands": ["cd web"]
+    }
+  ]
+}

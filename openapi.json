@@ -1,0 +1,2825 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8787",
+      "description": "Current environment"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "hOn012drizZle34aP1"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100,
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "example@exmaple.com"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "USER"
+            ],
+            "example": "USER"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2024-05-22 13:51:19"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2024-05-22 13:51:19"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "email",
+          "role",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "SignUpResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "token": {
+            "type": "string",
+            "example": "1234567890"
+          }
+        },
+        "required": [
+          "user",
+          "token"
+        ]
+      },
+      "UserPassword": {
+        "type": "string",
+        "minLength": 8,
+        "maxLength": 100,
+        "example": "password123"
+      },
+      "SignUpRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100,
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "example@exmaple.com"
+          },
+          "password": {
+            "$ref": "#/components/schemas/UserPassword"
+          }
+        },
+        "required": [
+          "name",
+          "email",
+          "password"
+        ]
+      },
+      "SignInResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "token": {
+            "type": "string",
+            "example": "1234567890"
+          }
+        },
+        "required": [
+          "user",
+          "token"
+        ]
+      },
+      "SignInRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "example@exmaple.com"
+          },
+          "password": {
+            "$ref": "#/components/schemas/UserPassword"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "UpdateUserRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100,
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "example@exmaple.com"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "USER"
+            ],
+            "example": "USER"
+          }
+        },
+        "required": [
+          "name",
+          "email",
+          "role"
+        ]
+      },
+      "Post": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "hOn012drizZle34aP1"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "example": "HonoDrizzle"
+          },
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "example": "Post body"
+          },
+          "public": {
+            "type": "boolean",
+            "example": true
+          },
+          "authorId": {
+            "type": "string",
+            "example": "hOn012drizZle34aP1"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2024-05-22 13:51:19"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2024-05-22 13:51:19"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "body",
+          "public",
+          "authorId",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CreatePostRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "example": "HonoDrizzle"
+          },
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "example": "Post body"
+          },
+          "public": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "title",
+          "body",
+          "public"
+        ]
+      },
+      "UpdatePostRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "example": "HonoDrizzle"
+          },
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "example": "Post body"
+          },
+          "public": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "title",
+          "body",
+          "public"
+        ]
+      }
+    },
+    "parameters": {}
+  },
+  "paths": {
+    "/sign-up": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Sign up a new user",
+        "middleware": [
+          null
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUpRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User signed up successfully (cookie set automatically)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignUpResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request: problem processing request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            400
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "bad_request"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: authentication required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            401
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "unauthorized"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: insufficient permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            403
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "forbidden"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found: resource does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            404
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "not_found"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error: something went wrong.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            500
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "server_error"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sign-in": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Sign in a user",
+        "middleware": [
+          null
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignInRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User signed in successfully (cookie set automatically)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignInResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request: problem processing request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            400
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "bad_request"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: authentication required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            401
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "unauthorized"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: insufficient permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            403
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "forbidden"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found: resource does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            404
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "not_found"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error: something went wrong.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            500
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "server_error"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me": {
+      "get": {
+        "middleware": [
+          null
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "responses": {
+          "200": {
+            "description": "User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request: problem processing request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            400
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "bad_request"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: authentication required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            401
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "unauthorized"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: insufficient permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            403
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "forbidden"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found: resource does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            404
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "not_found"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error: something went wrong.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            500
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "server_error"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "put": {
+        "middleware": [
+          null
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Update a user",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "hOn012drizZle34aP1"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request: problem processing request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            400
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "bad_request"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: authentication required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            401
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "unauthorized"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: insufficient permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            403
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "forbidden"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found: resource does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            404
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "not_found"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error: something went wrong.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            500
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "server_error"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "middleware": [
+          null
+        ],
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "hOn012drizZle34aP1"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request: problem processing request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            400
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "bad_request"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: authentication required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            401
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "unauthorized"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: insufficient permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            403
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "forbidden"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found: resource does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            404
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "not_found"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error: something went wrong.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            500
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "server_error"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "middleware": [
+          null
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Get list of users",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "検索クエリ"
+            },
+            "required": false,
+            "name": "q",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "id",
+                "name",
+                "email",
+                "role",
+                "createdAt",
+                "updatedAt"
+              ],
+              "default": "createdAt",
+              "example": "createdAt"
+            },
+            "required": false,
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "default": "asc",
+              "description": "ソート順"
+            },
+            "required": false,
+            "name": "order",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "default": 0,
+              "description": "取得するアイテムのオフセット"
+            },
+            "required": false,
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "default": 50,
+              "description": "取得するアイテムの数"
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ADMIN",
+                "USER"
+              ],
+              "default": "USER",
+              "example": "ADMIN"
+            },
+            "required": false,
+            "name": "role",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/User"
+                          },
+                          "description": "アイテムの配列"
+                        },
+                        "total": {
+                          "type": "number",
+                          "description": "アイテムの総数",
+                          "example": 1
+                        }
+                      },
+                      "required": [
+                        "items",
+                        "total"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request: problem processing request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            400
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "bad_request"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: authentication required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            401
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "unauthorized"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: insufficient permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            403
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "forbidden"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found: resource does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            404
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "not_found"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error: something went wrong.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            500
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "server_error"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts": {
+      "post": {
+        "middleware": [
+          null
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "posts"
+        ],
+        "summary": "Create a post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePostRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request: problem processing request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            400
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "bad_request"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: authentication required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            401
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "unauthorized"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: insufficient permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            403
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "forbidden"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found: resource does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            404
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "not_found"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error: something went wrong.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            500
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "server_error"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "middleware": [
+          null
+        ],
+        "tags": [
+          "posts"
+        ],
+        "summary": "Get list of posts",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "検索クエリ"
+            },
+            "required": false,
+            "name": "q",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "id",
+                "createdAt",
+                "updatedAt"
+              ],
+              "default": "createdAt",
+              "example": "createdAt"
+            },
+            "required": false,
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "default": "asc",
+              "description": "ソート順"
+            },
+            "required": false,
+            "name": "order",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "default": 0,
+              "description": "取得するアイテムのオフセット"
+            },
+            "required": false,
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "default": 50,
+              "description": "取得するアイテムの数"
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Post"
+                          },
+                          "description": "アイテムの配列"
+                        },
+                        "total": {
+                          "type": "number",
+                          "description": "アイテムの総数",
+                          "example": 1
+                        }
+                      },
+                      "required": [
+                        "items",
+                        "total"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request: problem processing request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            400
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "bad_request"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: authentication required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            401
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "unauthorized"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: insufficient permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            403
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "forbidden"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found: resource does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            404
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "not_found"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error: something went wrong.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            500
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "server_error"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/{id}": {
+      "put": {
+        "middleware": [
+          null
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "posts"
+        ],
+        "summary": "Update a post",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "hOn012drizZle34aP1"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePostRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request: problem processing request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            400
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "bad_request"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: authentication required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            401
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "unauthorized"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: insufficient permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            403
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "forbidden"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found: resource does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            404
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "not_found"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error: something went wrong.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            500
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "server_error"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "middleware": [
+          null
+        ],
+        "tags": [
+          "posts"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "hOn012drizZle34aP1"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request: problem processing request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            400
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "bad_request"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: authentication required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            401
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "unauthorized"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: insufficient permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            403
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "forbidden"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found: resource does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            404
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "not_found"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error: something went wrong.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            500
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "server_error"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "middleware": [
+          null
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "posts"
+        ],
+        "summary": "Delete a post",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "hOn012drizZle34aP1"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          },
+          "400": {
+            "description": "Bad request: problem processing request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            400
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "bad_request"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: authentication required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            401
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "unauthorized"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: insufficient permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            403
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "forbidden"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found: resource does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            404
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "not_found"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error: something went wrong.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "number",
+                          "enum": [
+                            500
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "server_error"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "type"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "webhooks": {}
+}
