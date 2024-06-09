@@ -1,14 +1,8 @@
 import { errorResponses, responseWithPaginationSchema } from "@/lib/common-responses";
 import { createRouteConfig } from "@/lib/route-config";
+import { AppErrorStatusCode } from "@/lib/status-code";
 import { authGuard, publicGuard } from "@/middlewares/guard";
-import {
-  createPostRequestSchema,
-  getPostsQuerySchema,
-  postParamSchema,
-  postSchema,
-  updatePostRequestSchema,
-} from "./schemas";
-
+import { createPostRequest, getPostsQuery, postParam, postSchema, updatePostRequest } from "./schemas";
 /**
  * 投稿一覧を取得するルート設定
  */
@@ -19,7 +13,7 @@ export const getPostsConfig = createRouteConfig({
   tags: ["posts"],
   summary: "Get list of posts",
   request: {
-    query: getPostsQuerySchema,
+    query: getPostsQuery.typedSchema(),
   },
   responses: {
     200: {
@@ -30,7 +24,11 @@ export const getPostsConfig = createRouteConfig({
         },
       },
     },
-    ...errorResponses,
+    ...errorResponses({
+      validationErrorResnponseSchemas: {
+        [AppErrorStatusCode.BAD_REQUEST]: [getPostsQuery.typedValidationErrorResponseSchema()],
+      },
+    }),
   },
 });
 
@@ -48,7 +46,7 @@ export const createPostConfig = createRouteConfig({
     body: {
       content: {
         "application/json": {
-          schema: createPostRequestSchema,
+          schema: createPostRequest.typedSchema(),
         },
       },
     },
@@ -62,7 +60,11 @@ export const createPostConfig = createRouteConfig({
         },
       },
     },
-    ...errorResponses,
+    ...errorResponses({
+      validationErrorResnponseSchemas: {
+        [AppErrorStatusCode.BAD_REQUEST]: [createPostRequest.typedValidationErrorResponseSchema()],
+      },
+    }),
   },
 });
 
@@ -77,11 +79,11 @@ export const updatePostConfig = createRouteConfig({
   tags: ["posts"],
   summary: "Update a post",
   request: {
-    params: postParamSchema,
+    params: postParam.schema,
     body: {
       content: {
         "application/json": {
-          schema: updatePostRequestSchema,
+          schema: updatePostRequest.typedSchema(),
         },
       },
     },
@@ -95,7 +97,14 @@ export const updatePostConfig = createRouteConfig({
         },
       },
     },
-    ...errorResponses,
+    ...errorResponses({
+      validationErrorResnponseSchemas: {
+        [AppErrorStatusCode.BAD_REQUEST]: [
+          postParam.typedValidationErrorResponseSchema(),
+          updatePostRequest.typedValidationErrorResponseSchema(),
+        ],
+      },
+    }),
   },
 });
 
@@ -108,7 +117,7 @@ export const getPostByIdRouteConfig = createRouteConfig({
   middleware: [publicGuard],
   tags: ["posts"],
   request: {
-    params: postParamSchema,
+    params: postParam.schema,
   },
   responses: {
     200: {
@@ -119,7 +128,11 @@ export const getPostByIdRouteConfig = createRouteConfig({
         },
       },
     },
-    ...errorResponses,
+    ...errorResponses({
+      validationErrorResnponseSchemas: {
+        [AppErrorStatusCode.BAD_REQUEST]: [postParam.typedValidationErrorResponseSchema()],
+      },
+    }),
   },
 });
 
@@ -134,12 +147,16 @@ export const deletePostConfig = createRouteConfig({
   tags: ["posts"],
   summary: "Delete a post",
   request: {
-    params: postParamSchema,
+    params: postParam.schema,
   },
   responses: {
     204: {
       description: "No content",
     },
-    ...errorResponses,
+    ...errorResponses({
+      validationErrorResnponseSchemas: {
+        [AppErrorStatusCode.BAD_REQUEST]: [postParam.typedValidationErrorResponseSchema()],
+      },
+    }),
   },
 });

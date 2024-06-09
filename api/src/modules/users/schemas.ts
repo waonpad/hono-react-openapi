@@ -1,6 +1,11 @@
 import { paginationQuerySchema, timestampSchema } from "@/lib/common-schemas";
+import { z } from "@/lib/ja-zod";
+import {
+  createTypedValidationErrorResponseSchema,
+  createValidationSchemaWithTarget,
+} from "@/lib/typed-validation-error";
+import { getKeys } from "@/lib/utils";
 import { roleEnum } from "@/schemas/users";
-import { z } from "@hono/zod-openapi";
 
 /**
  * ユーザーのスキーマ
@@ -26,49 +31,82 @@ export const userSchema = z
 /**
  * ユーザー一覧のクエリパラメータのスキーマ
  */
-export const getUsersQuerySchema = paginationQuerySchema
-  .merge(
-    z.object({
-      sort: z
-        .enum([
-          "id",
-          "name",
-          "email",
-          "role",
-          "createdAt",
-          "updatedAt",
-        ] as const satisfies (keyof typeof userSchema._type)[])
-        .default("createdAt")
-        .optional()
-        .openapi({
-          example: "createdAt",
+export const getUsersQuery = {
+  schema: paginationQuerySchema
+    .merge(
+      z.object({
+        sort: z
+          .enum([
+            "id",
+            "name",
+            "email",
+            "role",
+            "createdAt",
+            "updatedAt",
+          ] as const satisfies (keyof typeof userSchema._type)[])
+          .default("createdAt")
+          .optional()
+          .openapi({
+            example: "createdAt",
+          }),
+        role: z.enum(roleEnum).default("USER").optional().openapi({
+          example: "ADMIN",
         }),
-      role: z.enum(roleEnum).default("USER").optional().openapi({
-        example: "ADMIN",
       }),
-    }),
-  )
-  .openapi("GetUsersQuery");
+    )
+    .openapi("GetUsersQuery"),
+  typedSchema: () =>
+    createValidationSchemaWithTarget({
+      target: "query",
+      schema: getUsersQuery.schema,
+    }).openapi("GetUsersQuery"),
+  typedValidationErrorResponseSchema: () =>
+    createTypedValidationErrorResponseSchema({
+      schema: getUsersQuery.typedSchema(),
+      paramsForThrowError: {
+        sort: "invalid",
+      },
+      appendKeys: getKeys(getUsersQuery.schema.shape),
+    }).openapi("GetUsersQueryValidationErrorResponse"),
+};
 
 /**
  * ユーザーの更新リクエストボディのスキーマ
  */
-export const updateUserRequestSchema = userSchema
-  .pick({
+export const updateUserRequest = {
+  schema: userSchema.pick({
     name: true,
     email: true,
     role: true,
-  })
-  .openapi("UpdateUserRequest");
+  }),
+  typedSchema: () =>
+    createValidationSchemaWithTarget({
+      target: "json",
+      schema: updateUserRequest.schema,
+    }).openapi("UpdateUserRequest"),
+  typedValidationErrorResponseSchema: () =>
+    createTypedValidationErrorResponseSchema({
+      schema: updateUserRequest.typedSchema(),
+      appendKeys: getKeys(updateUserRequest.schema.shape),
+    }).openapi("UpdateUserValidationErrorResponse"),
+};
 
 /**
  * ユーザーに関連するパスパラメータのスキーマ
  */
-export const userParamSchema = z
-  .object({
-    id: userSchema.shape.id,
-  })
-  .openapi("UserParam");
+export const userParam = {
+  schema: z
+    .object({
+      id: userSchema.shape.id,
+    })
+    .openapi("UserParam"),
+  typedValidationErrorResponseSchema: () =>
+    createTypedValidationErrorResponseSchema({
+      schema: userParam.schema,
+      appendKeys: getKeys(userParam.schema.shape),
+      isParam: true,
+    }).openapi("UserParamValidationErrorResponse"),
+};
 
 export const userPasswordSchema = z
   .string()

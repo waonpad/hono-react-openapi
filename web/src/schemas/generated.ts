@@ -6,6 +6,7 @@ export const SignUpRequest = z.object({
   name: z.string().min(2).max(100),
   email: z.string().email(),
   password: UserPassword.min(8).max(100),
+  __target: z.literal("json").optional(),
 });
 export const User = z.object({
   id: z.string(),
@@ -31,18 +32,16 @@ export const BadRequestErrorResponse = z.object({
     org: z.string().optional(),
   }),
 });
-export const ValidationErrorResnponse = z.object({
+export const SignUpValidationErrorResponse = z.object({
   error: z.object({
     message: z.string(),
     type: z.literal("VALIDATION_ERROR"),
     status: z.literal(400),
-    issues: z.array(
-      z.object({
-        path: z.array(z.union([z.string(), z.number()])),
-        code: z.string(),
-        message: z.string(),
-      })
-    ),
+    validationTarget: z.literal("json"),
+    formErrors: z.string(),
+    fieldErrors: z
+      .object({ name: z.string(), email: z.string(), password: z.string() })
+      .partial(),
   }),
 });
 export const UnauthorizedErrorResponse = z.object({
@@ -108,19 +107,75 @@ export const ServerErrorResponse = z.object({
 export const SignInRequest = z.object({
   email: z.string().email(),
   password: UserPassword.min(8).max(100),
+  __target: z.literal("json").optional(),
 });
 export const SignInResponse = z.object({ user: User, token: z.string() });
+export const SignInValidationErrorResponse = z.object({
+  error: z.object({
+    message: z.string(),
+    type: z.literal("VALIDATION_ERROR"),
+    status: z.literal(400),
+    validationTarget: z.literal("json"),
+    formErrors: z.string(),
+    fieldErrors: z
+      .object({ email: z.string(), password: z.string() })
+      .partial(),
+  }),
+});
 export const UpdateUserRequest = z.object({
   name: z.string().min(2).max(100),
   email: z.string().email(),
   role: z.enum(["ADMIN", "USER"]),
+  __target: z.literal("json").optional(),
+});
+export const UserParamValidationErrorResponse = z.object({
+  error: z.object({
+    message: z.string(),
+    type: z.literal("VALIDATION_ERROR"),
+    status: z.literal(400),
+    validationTarget: z.literal("param"),
+    formErrors: z.string(),
+    fieldErrors: z.object({ id: z.string() }).partial(),
+  }),
+});
+export const UpdateUserValidationErrorResponse = z.object({
+  error: z.object({
+    message: z.string(),
+    type: z.literal("VALIDATION_ERROR"),
+    status: z.literal(400),
+    validationTarget: z.literal("json"),
+    formErrors: z.string(),
+    fieldErrors: z
+      .object({ name: z.string(), email: z.string(), role: z.string() })
+      .partial(),
+  }),
 });
 export const offset = z.union([z.number(), z.null()]).optional().default(0);
 export const limit = z.union([z.number(), z.null()]).optional().default(50);
+export const GetUsersQueryValidationErrorResponse = z.object({
+  error: z.object({
+    message: z.string(),
+    type: z.literal("VALIDATION_ERROR"),
+    status: z.literal(400),
+    validationTarget: z.literal("query"),
+    formErrors: z.string(),
+    fieldErrors: z
+      .object({
+        sort: z.string(),
+        q: z.string(),
+        order: z.string(),
+        offset: z.string(),
+        limit: z.string(),
+        role: z.string(),
+      })
+      .partial(),
+  }),
+});
 export const CreatePostRequest = z.object({
   title: z.string().min(1).max(100),
   body: z.string().min(1),
   public: z.boolean(),
+  __target: z.literal("json").optional(),
 });
 export const Post = z.object({
   id: z.string(),
@@ -131,10 +186,63 @@ export const Post = z.object({
   createdAt: z.string(),
   updatedAt: z.string(),
 });
+export const CreatePostValidationErrorResponse = z.object({
+  error: z.object({
+    message: z.string(),
+    type: z.literal("VALIDATION_ERROR"),
+    status: z.literal(400),
+    validationTarget: z.literal("json"),
+    formErrors: z.string(),
+    fieldErrors: z
+      .object({ title: z.string(), body: z.string(), public: z.string() })
+      .partial(),
+  }),
+});
+export const GetPostsQueryValidationErrorResponse = z.object({
+  error: z.object({
+    message: z.string(),
+    type: z.literal("VALIDATION_ERROR"),
+    status: z.literal(400),
+    validationTarget: z.literal("query"),
+    formErrors: z.string(),
+    fieldErrors: z
+      .object({
+        sort: z.string(),
+        q: z.string(),
+        order: z.string(),
+        offset: z.string(),
+        limit: z.string(),
+      })
+      .partial(),
+  }),
+});
 export const UpdatePostRequest = z.object({
   title: z.string().min(1).max(100),
   body: z.string().min(1),
   public: z.boolean(),
+  __target: z.literal("json").optional(),
+});
+export const PostParamValidationErrorResponse = z.object({
+  error: z.object({
+    message: z.string(),
+    type: z.literal("VALIDATION_ERROR"),
+    status: z.literal(400),
+    validationTarget: z.literal("param"),
+    formErrors: z.string(),
+    fieldErrors: z.object({ id: z.string() }).partial(),
+  }),
+});
+export const UpdatePostValidationErrorResponse = z.object({
+  error: z.object({
+    message: z.string(),
+    type: z.literal("VALIDATION_ERROR"),
+    status: z.literal(400),
+    validationTarget: z.literal("json"),
+    formErrors: z.string(),
+    fieldErrors: z
+      .object({ title: z.string(), body: z.string(), public: z.string() })
+      .partial(),
+  }),
 });
 
 export const schemas = {
@@ -143,19 +251,27 @@ export const schemas = {
   User,
   SignUpResponse,
   BadRequestErrorResponse,
-  ValidationErrorResnponse,
+  SignUpValidationErrorResponse,
   UnauthorizedErrorResponse,
   ForbiddenErrorResponse,
   NotFoundErrorResponse,
   ServerErrorResponse,
   SignInRequest,
   SignInResponse,
+  SignInValidationErrorResponse,
   UpdateUserRequest,
+  UserParamValidationErrorResponse,
+  UpdateUserValidationErrorResponse,
   offset,
   limit,
+  GetUsersQueryValidationErrorResponse,
   CreatePostRequest,
   Post,
+  CreatePostValidationErrorResponse,
+  GetPostsQueryValidationErrorResponse,
   UpdatePostRequest,
+  PostParamValidationErrorResponse,
+  UpdatePostValidationErrorResponse,
 };
 
 // const endpoints = makeApi([
@@ -181,7 +297,7 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
+        schema: BadRequestErrorResponse,
       },
       {
         status: 401,
@@ -228,7 +344,10 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
+        schema: z.union([
+          BadRequestErrorResponse,
+          CreatePostValidationErrorResponse,
+        ]),
       },
       {
         status: 401,
@@ -269,8 +388,9 @@ export const endpoints = {
           order: z.enum(["asc", "desc"]).optional().default("asc"),
           offset: offset,
           limit: limit,
+          __target: z.literal("query").optional(),
         }),
-        __: "_____",
+        __: "______",
       },
       path: {
         schema: z.object({}),
@@ -284,7 +404,10 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
+        schema: z.union([
+          BadRequestErrorResponse,
+          GetPostsQueryValidationErrorResponse,
+        ]),
       },
       {
         status: 401,
@@ -333,7 +456,11 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
+        schema: z.union([
+          BadRequestErrorResponse,
+          PostParamValidationErrorResponse,
+          UpdatePostValidationErrorResponse,
+        ]),
       },
       {
         status: 401,
@@ -380,7 +507,10 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
+        schema: z.union([
+          BadRequestErrorResponse,
+          PostParamValidationErrorResponse,
+        ]),
       },
       {
         status: 401,
@@ -427,7 +557,10 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
+        schema: z.union([
+          BadRequestErrorResponse,
+          PostParamValidationErrorResponse,
+        ]),
       },
       {
         status: 401,
@@ -474,7 +607,10 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
+        schema: z.union([
+          BadRequestErrorResponse,
+          SignInValidationErrorResponse,
+        ]),
       },
       {
         status: 401,
@@ -521,7 +657,10 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
+        schema: z.union([
+          BadRequestErrorResponse,
+          SignUpValidationErrorResponse,
+        ]),
       },
       {
         status: 401,
@@ -563,8 +702,9 @@ export const endpoints = {
           offset: offset,
           limit: limit,
           role: z.enum(["ADMIN", "USER"]).optional().default("USER"),
+          __target: z.literal("query").optional(),
         }),
-        __: "______",
+        __: "_______",
       },
       path: {
         schema: z.object({}),
@@ -578,7 +718,10 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
+        schema: z.union([
+          BadRequestErrorResponse,
+          GetUsersQueryValidationErrorResponse,
+        ]),
       },
       {
         status: 401,
@@ -627,7 +770,11 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
+        schema: z.union([
+          BadRequestErrorResponse,
+          UserParamValidationErrorResponse,
+          UpdateUserValidationErrorResponse,
+        ]),
       },
       {
         status: 401,
@@ -674,7 +821,10 @@ export const endpoints = {
       {
         status: 400,
         description: `Bad request: problem processing request.`,
-        schema: z.union([BadRequestErrorResponse, ValidationErrorResnponse]),
+        schema: z.union([
+          BadRequestErrorResponse,
+          UserParamValidationErrorResponse,
+        ]),
       },
       {
         status: 401,
