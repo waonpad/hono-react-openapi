@@ -1,7 +1,7 @@
 import type { errorResponseSchema, resourceTypeSchema } from "@/lib/common-schemas";
-import type { z } from "@/lib/ja-zod";
 import type { jwtPayloadSchema } from "@/modules/auth/schemas";
 import type { D1Database } from "@cloudflare/workers-types";
+import type { z } from "@hono/zod-openapi";
 import { OpenAPIHono } from "@hono/zod-openapi";
 import type { Schema } from "hono";
 

@@ -1,6 +1,6 @@
 import type { PageResourceType } from "@/types/common";
+import { z } from "@hono/zod-openapi";
 import type { Context } from "hono";
-import { z } from "../lib/ja-zod";
 import type { errorSchema, errorTypeSchema } from "./common-schemas";
 import { AppErrorStatusCode, ErrorTypeMap, type HttpErrorStatusCode, formatToHttpStatusCode } from "./status-code";
 

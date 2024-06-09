@@ -1,11 +1,11 @@
 import { paginationQuerySchema, timestampSchema } from "@/lib/common-schemas";
-import { z } from "@/lib/ja-zod";
 import {
   createTypedValidationErrorResponseSchema,
   createValidationSchemaWithTarget,
 } from "@/lib/typed-validation-error";
 import { getKeys } from "@/lib/utils";
 import { roleEnum } from "@/schemas/users";
+import { z } from "@hono/zod-openapi";
 
 /**
  * ユーザーのスキーマ
@@ -62,11 +62,8 @@ export const getUsersQuery = {
     }).openapi("GetUsersQuery"),
   typedValidationErrorResponseSchema: () =>
     createTypedValidationErrorResponseSchema({
-      schema: getUsersQuery.typedSchema(),
-      paramsForThrowError: {
-        sort: "invalid",
-      },
-      appendKeys: getKeys(getUsersQuery.schema.shape),
+      target: "query",
+      keys: getKeys(getUsersQuery.schema.shape),
     }).openapi("GetUsersQueryValidationErrorResponse"),
 };
 
@@ -86,8 +83,8 @@ export const updateUserRequest = {
     }).openapi("UpdateUserRequest"),
   typedValidationErrorResponseSchema: () =>
     createTypedValidationErrorResponseSchema({
-      schema: updateUserRequest.typedSchema(),
-      appendKeys: getKeys(updateUserRequest.schema.shape),
+      target: "json",
+      keys: getKeys(updateUserRequest.schema.shape),
     }).openapi("UpdateUserValidationErrorResponse"),
 };
 
@@ -102,9 +99,8 @@ export const userParam = {
     .openapi("UserParam"),
   typedValidationErrorResponseSchema: () =>
     createTypedValidationErrorResponseSchema({
-      schema: userParam.schema,
-      appendKeys: getKeys(userParam.schema.shape),
-      isParam: true,
+      target: "param",
+      keys: getKeys(userParam.schema.shape),
     }).openapi("UserParamValidationErrorResponse"),
 };
 

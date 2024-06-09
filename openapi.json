@@ -100,7 +100,14 @@
                 ]
               },
               "severity": {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "debug",
+                  "info",
+                  "log",
+                  "warn",
+                  "error"
+                ]
               },
               "resourceType": {
                 "type": "string",
@@ -161,6 +168,37 @@
                   400
                 ]
               },
+              "severity": {
+                "type": "string",
+                "enum": [
+                  "error"
+                ]
+              },
+              "resourceType": {
+                "type": "string",
+                "enum": [
+                  "USER",
+                  "POST"
+                ]
+              },
+              "logId": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string"
+              },
+              "timestamp": {
+                "type": "string"
+              },
+              "usr": {
+                "type": "string"
+              },
+              "org": {
+                "type": "string"
+              },
               "validationTarget": {
                 "type": "string",
                 "enum": [
@@ -189,6 +227,7 @@
               "message",
               "type",
               "status",
+              "severity",
               "validationTarget",
               "formErrors",
               "fieldErrors"
@@ -221,7 +260,14 @@
                 ]
               },
               "severity": {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "debug",
+                  "info",
+                  "log",
+                  "warn",
+                  "error"
+                ]
               },
               "resourceType": {
                 "type": "string",
@@ -283,7 +329,14 @@
                 ]
               },
               "severity": {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "debug",
+                  "info",
+                  "log",
+                  "warn",
+                  "error"
+                ]
               },
               "resourceType": {
                 "type": "string",
@@ -345,7 +398,14 @@
                 ]
               },
               "severity": {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "debug",
+                  "info",
+                  "log",
+                  "warn",
+                  "error"
+                ]
               },
               "resourceType": {
                 "type": "string",
@@ -407,7 +467,14 @@
                 ]
               },
               "severity": {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "debug",
+                  "info",
+                  "log",
+                  "warn",
+                  "error"
+                ]
               },
               "resourceType": {
                 "type": "string",
@@ -520,6 +587,37 @@
                   400
                 ]
               },
+              "severity": {
+                "type": "string",
+                "enum": [
+                  "error"
+                ]
+              },
+              "resourceType": {
+                "type": "string",
+                "enum": [
+                  "USER",
+                  "POST"
+                ]
+              },
+              "logId": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string"
+              },
+              "timestamp": {
+                "type": "string"
+              },
+              "usr": {
+                "type": "string"
+              },
+              "org": {
+                "type": "string"
+              },
               "validationTarget": {
                 "type": "string",
                 "enum": [
@@ -545,6 +643,7 @@
               "message",
               "type",
               "status",
+              "severity",
               "validationTarget",
               "formErrors",
               "fieldErrors"
@@ -599,6 +698,37 @@
                   400
                 ]
               },
+              "severity": {
+                "type": "string",
+                "enum": [
+                  "error"
+                ]
+              },
+              "resourceType": {
+                "type": "string",
+                "enum": [
+                  "USER",
+                  "POST"
+                ]
+              },
+              "logId": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string"
+              },
+              "timestamp": {
+                "type": "string"
+              },
+              "usr": {
+                "type": "string"
+              },
+              "org": {
+                "type": "string"
+              },
               "validationTarget": {
                 "type": "string",
                 "enum": [
@@ -621,6 +751,7 @@
               "message",
               "type",
               "status",
+              "severity",
               "validationTarget",
               "formErrors",
               "fieldErrors"
@@ -652,6 +783,37 @@
                   400
                 ]
               },
+              "severity": {
+                "type": "string",
+                "enum": [
+                  "error"
+                ]
+              },
+              "resourceType": {
+                "type": "string",
+                "enum": [
+                  "USER",
+                  "POST"
+                ]
+              },
+              "logId": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string"
+              },
+              "timestamp": {
+                "type": "string"
+              },
+              "usr": {
+                "type": "string"
+              },
+              "org": {
+                "type": "string"
+              },
               "validationTarget": {
                 "type": "string",
                 "enum": [
@@ -680,6 +842,7 @@
               "message",
               "type",
               "status",
+              "severity",
               "validationTarget",
               "formErrors",
               "fieldErrors"
@@ -746,6 +909,37 @@
                   400
                 ]
               },
+              "severity": {
+                "type": "string",
+                "enum": [
+                  "error"
+                ]
+              },
+              "resourceType": {
+                "type": "string",
+                "enum": [
+                  "USER",
+                  "POST"
+                ]
+              },
+              "logId": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string"
+              },
+              "timestamp": {
+                "type": "string"
+              },
+              "usr": {
+                "type": "string"
+              },
+              "org": {
+                "type": "string"
+              },
               "validationTarget": {
                 "type": "string",
                 "enum": [
@@ -758,10 +952,10 @@
               "fieldErrors": {
                 "type": "object",
                 "properties": {
-                  "sort": {
+                  "q": {
                     "type": "string"
                   },
-                  "q": {
+                  "sort": {
                     "type": "string"
                   },
                   "order": {
@@ -783,6 +977,7 @@
               "message",
               "type",
               "status",
+              "severity",
               "validationTarget",
               "formErrors",
               "fieldErrors"
@@ -859,6 +1054,37 @@
                   400
                 ]
               },
+              "severity": {
+                "type": "string",
+                "enum": [
+                  "error"
+                ]
+              },
+              "resourceType": {
+                "type": "string",
+                "enum": [
+                  "USER",
+                  "POST"
+                ]
+              },
+              "logId": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string"
+              },
+              "timestamp": {
+                "type": "string"
+              },
+              "usr": {
+                "type": "string"
+              },
+              "org": {
+                "type": "string"
+              },
               "validationTarget": {
                 "type": "string",
                 "enum": [
@@ -887,6 +1113,7 @@
               "message",
               "type",
               "status",
+              "severity",
               "validationTarget",
               "formErrors",
               "fieldErrors"
@@ -949,6 +1176,37 @@
                   400
                 ]
               },
+              "severity": {
+                "type": "string",
+                "enum": [
+                  "error"
+                ]
+              },
+              "resourceType": {
+                "type": "string",
+                "enum": [
+                  "USER",
+                  "POST"
+                ]
+              },
+              "logId": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string"
+              },
+              "timestamp": {
+                "type": "string"
+              },
+              "usr": {
+                "type": "string"
+              },
+              "org": {
+                "type": "string"
+              },
               "validationTarget": {
                 "type": "string",
                 "enum": [
@@ -971,6 +1229,7 @@
               "message",
               "type",
               "status",
+              "severity",
               "validationTarget",
               "formErrors",
               "fieldErrors"
@@ -1002,6 +1261,37 @@
                   400
                 ]
               },
+              "severity": {
+                "type": "string",
+                "enum": [
+                  "error"
+                ]
+              },
+              "resourceType": {
+                "type": "string",
+                "enum": [
+                  "USER",
+                  "POST"
+                ]
+              },
+              "logId": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string"
+              },
+              "timestamp": {
+                "type": "string"
+              },
+              "usr": {
+                "type": "string"
+              },
+              "org": {
+                "type": "string"
+              },
               "validationTarget": {
                 "type": "string",
                 "enum": [
@@ -1030,6 +1320,7 @@
               "message",
               "type",
               "status",
+              "severity",
               "validationTarget",
               "formErrors",
               "fieldErrors"
@@ -1092,6 +1383,37 @@
                   400
                 ]
               },
+              "severity": {
+                "type": "string",
+                "enum": [
+                  "error"
+                ]
+              },
+              "resourceType": {
+                "type": "string",
+                "enum": [
+                  "USER",
+                  "POST"
+                ]
+              },
+              "logId": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string"
+              },
+              "timestamp": {
+                "type": "string"
+              },
+              "usr": {
+                "type": "string"
+              },
+              "org": {
+                "type": "string"
+              },
               "validationTarget": {
                 "type": "string",
                 "enum": [
@@ -1104,10 +1426,10 @@
               "fieldErrors": {
                 "type": "object",
                 "properties": {
-                  "sort": {
+                  "q": {
                     "type": "string"
                   },
-                  "q": {
+                  "sort": {
                     "type": "string"
                   },
                   "order": {
@@ -1126,6 +1448,7 @@
               "message",
               "type",
               "status",
+              "severity",
               "validationTarget",
               "formErrors",
               "fieldErrors"
