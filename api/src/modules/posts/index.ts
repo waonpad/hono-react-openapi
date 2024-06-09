@@ -18,8 +18,6 @@ const postsRoutes = new CustomHono({ defaultHook })
    * 投稿の作成
    */
   .openapi(createPostConfig, async (c) => {
-    console.log("createPostConfig");
-
     const { sub } = c.get("jwtPayload") as JwtPayload;
 
     const db = drizzle(c.env.DB);

@@ -140,7 +140,7 @@
           "error"
         ]
       },
-      "ValidationErrorResnponse": {
+      "SignUpValidationErrorResponse": {
         "type": "object",
         "properties": {
           "error": {
@@ -161,36 +161,27 @@
                   400
                 ]
               },
-              "issues": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "path": {
-                      "type": "array",
-                      "items": {
-                        "anyOf": [
-                          {
-                            "type": "string"
-                          },
-                          {
-                            "type": "number"
-                          }
-                        ]
-                      }
-                    },
-                    "code": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
+              "validationTarget": {
+                "type": "string",
+                "enum": [
+                  "json"
+                ]
+              },
+              "formErrors": {
+                "type": "string"
+              },
+              "fieldErrors": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
                   },
-                  "required": [
-                    "path",
-                    "code",
-                    "message"
-                  ]
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
                 }
               }
             },
@@ -198,7 +189,9 @@
               "message",
               "type",
               "status",
-              "issues"
+              "validationTarget",
+              "formErrors",
+              "fieldErrors"
             ]
           }
         },
@@ -476,6 +469,12 @@
           },
           "password": {
             "$ref": "#/components/schemas/UserPassword"
+          },
+          "__target": {
+            "type": "string",
+            "enum": [
+              "json"
+            ]
           }
         },
         "required": [
@@ -500,6 +499,62 @@
           "token"
         ]
       },
+      "SignInValidationErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "VALIDATION_ERROR"
+                ]
+              },
+              "status": {
+                "type": "number",
+                "enum": [
+                  400
+                ]
+              },
+              "validationTarget": {
+                "type": "string",
+                "enum": [
+                  "json"
+                ]
+              },
+              "formErrors": {
+                "type": "string"
+              },
+              "fieldErrors": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "required": [
+              "message",
+              "type",
+              "status",
+              "validationTarget",
+              "formErrors",
+              "fieldErrors"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
       "SignInRequest": {
         "type": "object",
         "properties": {
@@ -510,11 +565,129 @@
           },
           "password": {
             "$ref": "#/components/schemas/UserPassword"
+          },
+          "__target": {
+            "type": "string",
+            "enum": [
+              "json"
+            ]
           }
         },
         "required": [
           "email",
           "password"
+        ]
+      },
+      "UserParamValidationErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "VALIDATION_ERROR"
+                ]
+              },
+              "status": {
+                "type": "number",
+                "enum": [
+                  400
+                ]
+              },
+              "validationTarget": {
+                "type": "string",
+                "enum": [
+                  "param"
+                ]
+              },
+              "formErrors": {
+                "type": "string"
+              },
+              "fieldErrors": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "required": [
+              "message",
+              "type",
+              "status",
+              "validationTarget",
+              "formErrors",
+              "fieldErrors"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "UpdateUserValidationErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "VALIDATION_ERROR"
+                ]
+              },
+              "status": {
+                "type": "number",
+                "enum": [
+                  400
+                ]
+              },
+              "validationTarget": {
+                "type": "string",
+                "enum": [
+                  "json"
+                ]
+              },
+              "formErrors": {
+                "type": "string"
+              },
+              "fieldErrors": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "required": [
+              "message",
+              "type",
+              "status",
+              "validationTarget",
+              "formErrors",
+              "fieldErrors"
+            ]
+          }
+        },
+        "required": [
+          "error"
         ]
       },
       "UpdateUserRequest": {
@@ -538,12 +711,86 @@
               "USER"
             ],
             "example": "USER"
+          },
+          "__target": {
+            "type": "string",
+            "enum": [
+              "json"
+            ]
           }
         },
         "required": [
           "name",
           "email",
           "role"
+        ]
+      },
+      "GetUsersQueryValidationErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "VALIDATION_ERROR"
+                ]
+              },
+              "status": {
+                "type": "number",
+                "enum": [
+                  400
+                ]
+              },
+              "validationTarget": {
+                "type": "string",
+                "enum": [
+                  "query"
+                ]
+              },
+              "formErrors": {
+                "type": "string"
+              },
+              "fieldErrors": {
+                "type": "object",
+                "properties": {
+                  "sort": {
+                    "type": "string"
+                  },
+                  "q": {
+                    "type": "string"
+                  },
+                  "order": {
+                    "type": "string"
+                  },
+                  "offset": {
+                    "type": "string"
+                  },
+                  "limit": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "required": [
+              "message",
+              "type",
+              "status",
+              "validationTarget",
+              "formErrors",
+              "fieldErrors"
+            ]
+          }
+        },
+        "required": [
+          "error"
         ]
       },
       "Post": {
@@ -591,6 +838,65 @@
           "updatedAt"
         ]
       },
+      "CreatePostValidationErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "VALIDATION_ERROR"
+                ]
+              },
+              "status": {
+                "type": "number",
+                "enum": [
+                  400
+                ]
+              },
+              "validationTarget": {
+                "type": "string",
+                "enum": [
+                  "json"
+                ]
+              },
+              "formErrors": {
+                "type": "string"
+              },
+              "fieldErrors": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "body": {
+                    "type": "string"
+                  },
+                  "public": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "required": [
+              "message",
+              "type",
+              "status",
+              "validationTarget",
+              "formErrors",
+              "fieldErrors"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
       "CreatePostRequest": {
         "type": "object",
         "properties": {
@@ -608,12 +914,130 @@
           "public": {
             "type": "boolean",
             "example": true
+          },
+          "__target": {
+            "type": "string",
+            "enum": [
+              "json"
+            ]
           }
         },
         "required": [
           "title",
           "body",
           "public"
+        ]
+      },
+      "PostParamValidationErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "VALIDATION_ERROR"
+                ]
+              },
+              "status": {
+                "type": "number",
+                "enum": [
+                  400
+                ]
+              },
+              "validationTarget": {
+                "type": "string",
+                "enum": [
+                  "param"
+                ]
+              },
+              "formErrors": {
+                "type": "string"
+              },
+              "fieldErrors": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "required": [
+              "message",
+              "type",
+              "status",
+              "validationTarget",
+              "formErrors",
+              "fieldErrors"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "UpdatePostValidationErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "VALIDATION_ERROR"
+                ]
+              },
+              "status": {
+                "type": "number",
+                "enum": [
+                  400
+                ]
+              },
+              "validationTarget": {
+                "type": "string",
+                "enum": [
+                  "json"
+                ]
+              },
+              "formErrors": {
+                "type": "string"
+              },
+              "fieldErrors": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "body": {
+                    "type": "string"
+                  },
+                  "public": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "required": [
+              "message",
+              "type",
+              "status",
+              "validationTarget",
+              "formErrors",
+              "fieldErrors"
+            ]
+          }
+        },
+        "required": [
+          "error"
         ]
       },
       "UpdatePostRequest": {
@@ -633,12 +1057,83 @@
           "public": {
             "type": "boolean",
             "example": true
+          },
+          "__target": {
+            "type": "string",
+            "enum": [
+              "json"
+            ]
           }
         },
         "required": [
           "title",
           "body",
           "public"
+        ]
+      },
+      "GetPostsQueryValidationErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "VALIDATION_ERROR"
+                ]
+              },
+              "status": {
+                "type": "number",
+                "enum": [
+                  400
+                ]
+              },
+              "validationTarget": {
+                "type": "string",
+                "enum": [
+                  "query"
+                ]
+              },
+              "formErrors": {
+                "type": "string"
+              },
+              "fieldErrors": {
+                "type": "object",
+                "properties": {
+                  "sort": {
+                    "type": "string"
+                  },
+                  "q": {
+                    "type": "string"
+                  },
+                  "order": {
+                    "type": "string"
+                  },
+                  "offset": {
+                    "type": "string"
+                  },
+                  "limit": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "required": [
+              "message",
+              "type",
+              "status",
+              "validationTarget",
+              "formErrors",
+              "fieldErrors"
+            ]
+          }
+        },
+        "required": [
+          "error"
         ]
       }
     },
@@ -689,7 +1184,7 @@
                       "$ref": "#/components/schemas/BadRequestErrorResponse"
                     },
                     {
-                      "$ref": "#/components/schemas/ValidationErrorResnponse"
+                      "$ref": "#/components/schemas/SignUpValidationErrorResponse"
                     }
                   ]
                 }
@@ -783,7 +1278,7 @@
                       "$ref": "#/components/schemas/BadRequestErrorResponse"
                     },
                     {
-                      "$ref": "#/components/schemas/ValidationErrorResnponse"
+                      "$ref": "#/components/schemas/SignInValidationErrorResponse"
                     }
                   ]
                 }
@@ -862,14 +1357,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/BadRequestErrorResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ValidationErrorResnponse"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/BadRequestErrorResponse"
                 }
               }
             }
@@ -972,7 +1460,10 @@
                       "$ref": "#/components/schemas/BadRequestErrorResponse"
                     },
                     {
-                      "$ref": "#/components/schemas/ValidationErrorResnponse"
+                      "$ref": "#/components/schemas/UserParamValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UpdateUserValidationErrorResponse"
                     }
                   ]
                 }
@@ -1060,7 +1551,7 @@
                       "$ref": "#/components/schemas/BadRequestErrorResponse"
                     },
                     {
-                      "$ref": "#/components/schemas/ValidationErrorResnponse"
+                      "$ref": "#/components/schemas/UserParamValidationErrorResponse"
                     }
                   ]
                 }
@@ -1200,6 +1691,17 @@
             "required": false,
             "name": "role",
             "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "query"
+              ]
+            },
+            "required": false,
+            "name": "__target",
+            "in": "query"
           }
         ],
         "responses": {
@@ -1249,7 +1751,7 @@
                       "$ref": "#/components/schemas/BadRequestErrorResponse"
                     },
                     {
-                      "$ref": "#/components/schemas/ValidationErrorResnponse"
+                      "$ref": "#/components/schemas/GetUsersQueryValidationErrorResponse"
                     }
                   ]
                 }
@@ -1343,7 +1845,7 @@
                       "$ref": "#/components/schemas/BadRequestErrorResponse"
                     },
                     {
-                      "$ref": "#/components/schemas/ValidationErrorResnponse"
+                      "$ref": "#/components/schemas/CreatePostValidationErrorResponse"
                     }
                   ]
                 }
@@ -1464,6 +1966,17 @@
             "required": false,
             "name": "limit",
             "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "query"
+              ]
+            },
+            "required": false,
+            "name": "__target",
+            "in": "query"
           }
         ],
         "responses": {
@@ -1513,7 +2026,7 @@
                       "$ref": "#/components/schemas/BadRequestErrorResponse"
                     },
                     {
-                      "$ref": "#/components/schemas/ValidationErrorResnponse"
+                      "$ref": "#/components/schemas/GetPostsQueryValidationErrorResponse"
                     }
                   ]
                 }
@@ -1618,7 +2131,10 @@
                       "$ref": "#/components/schemas/BadRequestErrorResponse"
                     },
                     {
-                      "$ref": "#/components/schemas/ValidationErrorResnponse"
+                      "$ref": "#/components/schemas/PostParamValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/UpdatePostValidationErrorResponse"
                     }
                   ]
                 }
@@ -1706,7 +2222,7 @@
                       "$ref": "#/components/schemas/BadRequestErrorResponse"
                     },
                     {
-                      "$ref": "#/components/schemas/ValidationErrorResnponse"
+                      "$ref": "#/components/schemas/PostParamValidationErrorResponse"
                     }
                   ]
                 }
@@ -1793,7 +2309,7 @@
                       "$ref": "#/components/schemas/BadRequestErrorResponse"
                     },
                     {
-                      "$ref": "#/components/schemas/ValidationErrorResnponse"
+                      "$ref": "#/components/schemas/PostParamValidationErrorResponse"
                     }
                   ]
                 }

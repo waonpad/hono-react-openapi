@@ -1,7 +1,8 @@
 import { errorResponses, responseWithPaginationSchema } from "@/lib/common-responses";
 import { createRouteConfig } from "@/lib/route-config";
+import { AppErrorStatusCode } from "@/lib/status-code";
 import { authGuard, publicGuard } from "@/middlewares/guard";
-import { getUsersQuerySchema, updateUserRequestSchema, userParamSchema, userSchema } from "./schemas";
+import { getUsersQuery, updateUserRequest, userParam, userSchema } from "./schemas";
 
 /**
  * 自身のユーザー情報を取得するルート設定
@@ -25,7 +26,7 @@ export const meRouteConfig = createRouteConfig({
         },
       },
     },
-    ...errorResponses,
+    ...errorResponses({}),
   },
 });
 
@@ -39,7 +40,7 @@ export const getUsersConfig = createRouteConfig({
   tags: ["users"],
   summary: "Get list of users",
   request: {
-    query: getUsersQuerySchema,
+    query: getUsersQuery.typedSchema(),
   },
   responses: {
     200: {
@@ -50,7 +51,11 @@ export const getUsersConfig = createRouteConfig({
         },
       },
     },
-    ...errorResponses,
+    ...errorResponses({
+      validationErrorResnponseSchemas: {
+        [AppErrorStatusCode.BAD_REQUEST]: [getUsersQuery.typedValidationErrorResponseSchema()],
+      },
+    }),
   },
 });
 
@@ -65,11 +70,11 @@ export const updateUserConfig = createRouteConfig({
   tags: ["users"],
   summary: "Update a user",
   request: {
-    params: userParamSchema,
+    params: userParam.schema,
     body: {
       content: {
         "application/json": {
-          schema: updateUserRequestSchema,
+          schema: updateUserRequest.typedSchema(),
         },
       },
     },
@@ -83,7 +88,14 @@ export const updateUserConfig = createRouteConfig({
         },
       },
     },
-    ...errorResponses,
+    ...errorResponses({
+      validationErrorResnponseSchemas: {
+        [AppErrorStatusCode.BAD_REQUEST]: [
+          userParam.typedValidationErrorResponseSchema(),
+          updateUserRequest.typedValidationErrorResponseSchema(),
+        ],
+      },
+    }),
   },
 });
 
@@ -96,7 +108,7 @@ export const getUserByIdRouteConfig = createRouteConfig({
   middleware: [publicGuard],
   tags: ["users"],
   request: {
-    params: userParamSchema,
+    params: userParam.schema,
   },
   responses: {
     200: {
@@ -107,6 +119,10 @@ export const getUserByIdRouteConfig = createRouteConfig({
         },
       },
     },
-    ...errorResponses,
+    ...errorResponses({
+      validationErrorResnponseSchemas: {
+        [AppErrorStatusCode.BAD_REQUEST]: [userParam.typedValidationErrorResponseSchema()],
+      },
+    }),
   },
 });

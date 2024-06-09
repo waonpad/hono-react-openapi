@@ -1,7 +1,8 @@
 import { errorResponses } from "@/lib/common-responses";
 import { createRouteConfig } from "@/lib/route-config";
+import { AppErrorStatusCode } from "@/lib/status-code";
 import { publicGuard } from "@/middlewares/guard";
-import { signInRequestSchema, signInResponseSchema, signUpRequestSchema, signUpResponseSchema } from "./schemas";
+import { signInRequest, signInResponseSchema, signUpRequest, signUpResponseSchema } from "./schemas";
 
 /**
  * サインアップのルート設定
@@ -17,7 +18,7 @@ export const signUpRouteConfig = createRouteConfig({
     body: {
       content: {
         "application/json": {
-          schema: signUpRequestSchema,
+          schema: signUpRequest.typedSchema(),
         },
       },
     },
@@ -31,7 +32,11 @@ export const signUpRouteConfig = createRouteConfig({
         },
       },
     },
-    ...errorResponses,
+    ...errorResponses({
+      validationErrorResnponseSchemas: {
+        [AppErrorStatusCode.BAD_REQUEST]: [signUpRequest.typedValidationErrorResponseSchema()],
+      },
+    }),
   },
 });
 
@@ -49,7 +54,7 @@ export const signInRouteConfig = createRouteConfig({
     body: {
       content: {
         "application/json": {
-          schema: signInRequestSchema,
+          schema: signInRequest.typedSchema(),
         },
       },
     },
@@ -63,6 +68,10 @@ export const signInRouteConfig = createRouteConfig({
         },
       },
     },
-    ...errorResponses,
+    ...errorResponses({
+      validationErrorResnponseSchemas: {
+        [AppErrorStatusCode.BAD_REQUEST]: [signInRequest.typedValidationErrorResponseSchema()],
+      },
+    }),
   },
 });

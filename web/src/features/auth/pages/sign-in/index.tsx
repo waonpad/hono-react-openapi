@@ -13,6 +13,7 @@ export const SignIn = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<typeof signInFormSchema._input>({
     resolver: zodResolver(signInFormSchema),
   });
@@ -20,9 +21,22 @@ export const SignIn = () => {
   const { mutateAsync, isPending } = useSignInMutation();
 
   const onSubmit = handleSubmit(async (data: typeof signInFormSchema._type) => {
-    const [res, error] = await mutateAsync({ body: { ...data } });
+    const [res, error] = await mutateAsync({ body: data });
 
     if (error) {
+      if (error.details?.error.type === "VALIDATION_ERROR" && error.details?.error.validationTarget === "json") {
+        const { formErrors, fieldErrors } = error.details.error;
+
+        formErrors && setError("root", { message: formErrors });
+
+        const { email, password } = fieldErrors;
+
+        email && setError("email", { message: email });
+        password && setError("password", { message: password });
+
+        return;
+      }
+
       // エラーに応じた処理
       throw error;
     }
@@ -38,6 +52,7 @@ export const SignIn = () => {
       <h1 style={{ fontSize: 20 }}>Sign In</h1>
       <Link to="/auth/sign-up">Sign up</Link>
       <form onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+        {errors.root && <p style={{ margin: 0 }}>{errors.root.message}</p>}
         <div>
           <input {...register("email")} style={{ width: "100%", boxSizing: "border-box" }} />
           {errors.email && <p style={{ margin: 0 }}>{errors.email.message}</p>}

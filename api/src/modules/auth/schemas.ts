@@ -1,26 +1,51 @@
 import { z } from "@/lib/ja-zod";
+import {
+  createTypedValidationErrorResponseSchema,
+  createValidationSchemaWithTarget,
+} from "@/lib/typed-validation-error";
+import { getKeys } from "@/lib/utils";
 import { userPasswordSchema, userSchema } from "../users/schemas";
 
 /**
  * サインインのリクエストボディのスキーマ
  */
-export const signInRequestSchema = z
-  .object({
+export const signInRequest = {
+  schema: z.object({
     email: userSchema.shape.email,
     password: userPasswordSchema,
-  })
-  .openapi("SignInRequest");
+  }),
+  typedSchema: () =>
+    createValidationSchemaWithTarget({
+      target: "json",
+      schema: signInRequest.schema,
+    }).openapi("SignInRequest"),
+  typedValidationErrorResponseSchema: () =>
+    createTypedValidationErrorResponseSchema({
+      schema: signInRequest.typedSchema(),
+      appendKeys: getKeys(signInRequest.schema.shape),
+    }).openapi("SignInValidationErrorResponse"),
+};
 
 /**
  * サインアップのリクエストボディのスキーマ
  */
-export const signUpRequestSchema = z
-  .object({
+export const signUpRequest = {
+  schema: z.object({
     name: userSchema.shape.name,
     email: userSchema.shape.email,
     password: userPasswordSchema,
-  })
-  .openapi("SignUpRequest");
+  }),
+  typedSchema: () =>
+    createValidationSchemaWithTarget({
+      target: "json",
+      schema: signUpRequest.schema,
+    }).openapi("SignUpRequest"),
+  typedValidationErrorResponseSchema: () =>
+    createTypedValidationErrorResponseSchema({
+      schema: signUpRequest.typedSchema(),
+      appendKeys: getKeys(signUpRequest.schema.shape),
+    }).openapi("SignUpValidationErrorResponse"),
+};
 
 /**
  * サインアップのレスポンスのスキーマ

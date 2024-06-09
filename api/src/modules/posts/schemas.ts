@@ -1,5 +1,10 @@
 import { paginationQuerySchema, timestampSchema } from "@/lib/common-schemas";
-import { z } from "@hono/zod-openapi";
+import { z } from "@/lib/ja-zod";
+import {
+  createTypedValidationErrorResponseSchema,
+  createValidationSchemaWithTarget,
+} from "@/lib/typed-validation-error";
+import { getKeys } from "@/lib/utils";
 import { userSchema } from "../users/schemas";
 
 /**
@@ -27,8 +32,8 @@ export const postSchema = z
 /**
  * 投稿一覧のクエリパラメータのスキーマ
  */
-export const getPostsQuerySchema = paginationQuerySchema
-  .merge(
+export const getPostsQuery = {
+  schema: paginationQuerySchema.merge(
     z.object({
       sort: z
         .enum(["id", "createdAt", "updatedAt"] as const satisfies (keyof typeof postSchema._type)[])
@@ -38,36 +43,77 @@ export const getPostsQuerySchema = paginationQuerySchema
           example: "createdAt",
         }),
     }),
-  )
-  .openapi("GetPostsQuery");
+  ),
+  typedSchema: () =>
+    createValidationSchemaWithTarget({
+      target: "query",
+      schema: getPostsQuery.schema,
+    }).openapi("GetPostsQuery"),
+  typedValidationErrorResponseSchema: () =>
+    createTypedValidationErrorResponseSchema({
+      schema: getPostsQuery.typedSchema(),
+      paramsForThrowError: {
+        sort: "invalid",
+      },
+      appendKeys: getKeys(getPostsQuery.schema.shape),
+    }).openapi("GetPostsQueryValidationErrorResponse"),
+};
 
 /**
  * 投稿の作成リクエストボディのスキーマ
  */
-export const createPostRequestSchema = postSchema
-  .pick({
+export const createPostRequest = {
+  schema: postSchema.pick({
     title: true,
     body: true,
     public: true,
-  })
-  .openapi("CreatePostRequest");
+  }),
+  typedSchema: () =>
+    createValidationSchemaWithTarget({
+      target: "json",
+      schema: createPostRequest.schema,
+    }).openapi("CreatePostRequest"),
+  typedValidationErrorResponseSchema: () =>
+    createTypedValidationErrorResponseSchema({
+      schema: createPostRequest.typedSchema(),
+      appendKeys: getKeys(createPostRequest.schema.shape),
+    }).openapi("CreatePostValidationErrorResponse"),
+};
 
 /**
  * 投稿の更新リクエストボディのスキーマ
  */
-export const updatePostRequestSchema = postSchema
-  .pick({
+export const updatePostRequest = {
+  schema: postSchema.pick({
     title: true,
     body: true,
     public: true,
-  })
-  .openapi("UpdatePostRequest");
+  }),
+  typedSchema: () =>
+    createValidationSchemaWithTarget({
+      target: "json",
+      schema: updatePostRequest.schema,
+    }).openapi("UpdatePostRequest"),
+  typedValidationErrorResponseSchema: () =>
+    createTypedValidationErrorResponseSchema({
+      schema: updatePostRequest.typedSchema(),
+      appendKeys: getKeys(updatePostRequest.schema.shape),
+    }).openapi("UpdatePostValidationErrorResponse"),
+};
 
 /**
  * 投稿に関連するパスパラメータのスキーマ
  */
-export const postParamSchema = z
-  .object({
-    id: postSchema.shape.id,
-  })
-  .openapi("PostParam");
+export const postParam = {
+  schema: z
+    .object({
+      id: postSchema.shape.id,
+    })
+    .openapi("PostParam"),
+  typedValidationErrorResponseSchema: () =>
+    createTypedValidationErrorResponseSchema({
+      schema: postParam.schema,
+      appendKeys: getKeys(postParam.schema.shape),
+      isParam: true,
+    }).openapi("PostParamValidationErrorResponse"),
+};
