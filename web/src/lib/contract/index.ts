@@ -1,6 +1,6 @@
 import { HttpError, type HttpErrorType } from "@/constants/errors";
-import type { z } from "@/lib/zod/i18n/ja";
 import { endpoints } from "@/schemas/generated";
+import type { z } from "zod";
 import { type Options, destroy, get, patch, post, put } from "../fetcher";
 
 export const createContract = <

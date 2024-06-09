@@ -1,5 +1,5 @@
 import type { createRoute } from "@hono/zod-openapi";
-import { z } from "../lib/ja-zod";
+import { z } from "@hono/zod-openapi";
 import { createTypedErrorResponseSchema } from "./common-schemas";
 import { AppErrorStatusCode } from "./status-code";
 import type { createTypedValidationErrorResponseSchema } from "./typed-validation-error";

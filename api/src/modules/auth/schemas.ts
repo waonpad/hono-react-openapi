@@ -1,9 +1,9 @@
-import { z } from "@/lib/ja-zod";
 import {
   createTypedValidationErrorResponseSchema,
   createValidationSchemaWithTarget,
 } from "@/lib/typed-validation-error";
 import { getKeys } from "@/lib/utils";
+import { z } from "@hono/zod-openapi";
 import { userPasswordSchema, userSchema } from "../users/schemas";
 
 /**
@@ -21,8 +21,8 @@ export const signInRequest = {
     }).openapi("SignInRequest"),
   typedValidationErrorResponseSchema: () =>
     createTypedValidationErrorResponseSchema({
-      schema: signInRequest.typedSchema(),
-      appendKeys: getKeys(signInRequest.schema.shape),
+      target: "json",
+      keys: getKeys(signInRequest.schema.shape),
     }).openapi("SignInValidationErrorResponse"),
 };
 
@@ -42,8 +42,8 @@ export const signUpRequest = {
     }).openapi("SignUpRequest"),
   typedValidationErrorResponseSchema: () =>
     createTypedValidationErrorResponseSchema({
-      schema: signUpRequest.typedSchema(),
-      appendKeys: getKeys(signUpRequest.schema.shape),
+      target: "json",
+      keys: getKeys(signUpRequest.schema.shape),
     }).openapi("SignUpValidationErrorResponse"),
 };
 

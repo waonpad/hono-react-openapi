@@ -1,6 +1,7 @@
 import type { Hook } from "@hono/zod-openapi";
 import { ZodError } from "zod";
 import type { Env } from "../types/common";
+import { AppErrorStatusCode, type ErrorType, formatToHttpStatusCode } from "./status-code";
 import {
   ErrorTargetKey,
   type ValidationTarget,
@@ -27,12 +28,16 @@ export const defaultHook: Hook<unknown, Env, "", unknown> = (result, c) => {
     // fieldErrorsからErrorTargetKeyを削除
     delete fieldErrors[ErrorTargetKey];
 
+    const errorType = "VALIDATION_ERROR" satisfies ErrorType;
+
     return c.json(
       {
         error: {
           message: "バリデーションエラーが発生しました",
-          type: "VALIDATION_ERROR",
-          status: 400,
+          type: errorType,
+          status: formatToHttpStatusCode(AppErrorStatusCode[errorType]),
+          severity: "error",
+          method: c.req.method,
           validationTarget: target,
           formErrors: formErrors[0],
           fieldErrors: Object.fromEntries(Object.entries(fieldErrors).map(([key, value]) => [key, (value ?? [])[0]])),

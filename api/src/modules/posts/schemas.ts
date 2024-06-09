@@ -1,10 +1,10 @@
 import { paginationQuerySchema, timestampSchema } from "@/lib/common-schemas";
-import { z } from "@/lib/ja-zod";
 import {
   createTypedValidationErrorResponseSchema,
   createValidationSchemaWithTarget,
 } from "@/lib/typed-validation-error";
 import { getKeys } from "@/lib/utils";
+import { z } from "@hono/zod-openapi";
 import { userSchema } from "../users/schemas";
 
 /**
@@ -51,11 +51,8 @@ export const getPostsQuery = {
     }).openapi("GetPostsQuery"),
   typedValidationErrorResponseSchema: () =>
     createTypedValidationErrorResponseSchema({
-      schema: getPostsQuery.typedSchema(),
-      paramsForThrowError: {
-        sort: "invalid",
-      },
-      appendKeys: getKeys(getPostsQuery.schema.shape),
+      target: "query",
+      keys: getKeys(getPostsQuery.schema.shape),
     }).openapi("GetPostsQueryValidationErrorResponse"),
 };
 
@@ -75,8 +72,8 @@ export const createPostRequest = {
     }).openapi("CreatePostRequest"),
   typedValidationErrorResponseSchema: () =>
     createTypedValidationErrorResponseSchema({
-      schema: createPostRequest.typedSchema(),
-      appendKeys: getKeys(createPostRequest.schema.shape),
+      target: "json",
+      keys: getKeys(createPostRequest.schema.shape),
     }).openapi("CreatePostValidationErrorResponse"),
 };
 
@@ -96,8 +93,8 @@ export const updatePostRequest = {
     }).openapi("UpdatePostRequest"),
   typedValidationErrorResponseSchema: () =>
     createTypedValidationErrorResponseSchema({
-      schema: updatePostRequest.typedSchema(),
-      appendKeys: getKeys(updatePostRequest.schema.shape),
+      target: "json",
+      keys: getKeys(updatePostRequest.schema.shape),
     }).openapi("UpdatePostValidationErrorResponse"),
 };
 
@@ -112,8 +109,7 @@ export const postParam = {
     .openapi("PostParam"),
   typedValidationErrorResponseSchema: () =>
     createTypedValidationErrorResponseSchema({
-      schema: postParam.schema,
-      appendKeys: getKeys(postParam.schema.shape),
-      isParam: true,
+      target: "param",
+      keys: getKeys(postParam.schema.shape),
     }).openapi("PostParamValidationErrorResponse"),
 };

@@ -1,10 +1,10 @@
 import { defaultHook } from "@/lib/default-hook";
 import { errorResponse } from "@/lib/errors";
-import { z } from "@/lib/ja-zod";
 import { getOrderColumn } from "@/lib/order-column";
 import { AppErrorStatusCode } from "@/lib/status-code";
 import { usersTable } from "@/schemas/users";
 import { CustomHono, type JwtPayload } from "@/types/common";
+import { z } from "@hono/zod-openapi";
 import { and, count, eq, ilike, or, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
 import { getUserByIdRouteConfig, getUsersConfig, meRouteConfig, updateUserConfig } from "./routes";
